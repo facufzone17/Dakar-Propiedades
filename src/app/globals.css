@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens — brief §3, al pie.
+   Paleta monocromática a propósito: el color lo ponen las fotos, no la interfaz.
+   --------------------------------------------------------------------------- */
+@theme {
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f8f8f8;
+  --color-surface: #ececec;
+  --color-line: #d9d9d9;
+  --color-ink: #171717;
+  --color-muted: #666666;
+
+  --font-sans: var(--font-urbanist), ui-sans-serif, system-ui, sans-serif;
+
+  /* Botones, inputs y tarjetas: esquina suavizada, ni pill ni cuadrada */
+  --radius-brand: 8px;
+
+  /* Escala mobile-first. El tope de H1 son los 120px de Realtab en desktop. */
+  --text-h1: clamp(2.75rem, 11vw, 7.5rem);
+  --text-h1--line-height: 0.95;
+  --text-h2: clamp(2rem, 5vw, 3rem);
+  --text-h2--line-height: 1.05;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Foco visible y consistente en toda la interfaz (accesibilidad, brief regla 7) */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  /* Sobre fondo oscuro o foto, el foco negro no se ve */
+  .on-dark :focus-visible {
+    outline-color: #ffffff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
