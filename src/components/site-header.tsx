@@ -8,15 +8,7 @@ import { ArrowRightIcon, CloseIcon, MenuIcon, WhatsappIcon } from "./icons";
 const MENSAJE_WA = `Hola ${SITIO.nombre}, quería hacerles una consulta.`;
 
 export function SiteHeader() {
-  const [scrolled, setScrolled] = useState(false);
   const [menuAbierto, setMenuAbierto] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   // Con el menú abierto: bloquear el scroll del fondo y cerrar con Escape
   useEffect(() => {
@@ -33,11 +25,10 @@ export function SiteHeader() {
   }, [menuAbierto]);
 
   return (
-    <header
-      className={`on-dark fixed inset-x-0 top-0 z-50 text-white transition-colors duration-300 ${
-        scrolled || menuAbierto ? "bg-ink" : "bg-transparent"
-      }`}
-    >
+    // Siempre sólido: transparente arriba de todo solo funciona en la home,
+    // donde la foto del hero tiene un scrim oscuro. En el resto de las páginas
+    // (fondo blanco) el header quedaba invisible hasta scrollear.
+    <header className="on-dark fixed inset-x-0 top-0 z-50 bg-ink text-white">
       <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between gap-6 px-5 lg:px-10">
         <Link
           href="/"
