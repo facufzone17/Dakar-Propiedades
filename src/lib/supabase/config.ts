@@ -8,7 +8,14 @@
  */
 const URL_ENV = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 export const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
-export const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
+/**
+ * El nombre canónico es `SUPABASE_SERVICE_ROLE_KEY`. Se acepta también
+ * `SERVICE_ROLE_KEY` porque así quedó cargada en Vercel: fallar en silencio por
+ * el nombre de una variable ya nos costó un rato de diagnóstico. Cuando la
+ * variable de Vercel se renombre, este segundo caso se puede borrar.
+ */
+export const SUPABASE_SERVICE_ROLE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SERVICE_ROLE_KEY || "";
 
 /** El `ref` del proyecto va firmado dentro de la anon key: es la fuente de verdad. */
 function refDeLaKey(): string | null {
