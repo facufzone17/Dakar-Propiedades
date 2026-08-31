@@ -26,8 +26,22 @@ export async function iniciarSesion(
       : usuarioRaw;
 
   const sb = await crearClienteServidor();
-  const { error } = await sb.auth.signInWithPassword({ email, password });
-  if (error) return { error: "Usuario o contraseña incorrectos." };
+  const { error } = await sb.auth.signInWithPassword({ email, password }).catch((e) => ({
+    error: { message: `No se pudo contactar a Supabase: ${e?.message ?? e}`, code: "network" },
+  }));
+
+  if (error) {
+    // Solo las credenciales mal cargadas son "culpa" de quien entra. Cualquier
+    // otra cosa (API key, red, proveedor de email apagado) se muestra tal cual:
+    // esconderla detrás de un mensaje genérico hace imposible diagnosticar.
+    const credenciales =
+      "code" in error && (error.code === "invalid_credentials" || error.code === "email_not_confirmed");
+    return {
+      error: credenciales
+        ? "Usuario o contraseña incorrectos."
+        : `No se pudo iniciar sesión: ${error.message}`,
+    };
+  }
 
   redirect(next.startsWith("/admin") ? next : "/admin");
 }

@@ -1,5 +1,5 @@
 import { Card } from "@/components/admin/ui";
-import { supabaseConfigurado } from "@/lib/supabase/config";
+import { refDesparejo, supabaseConfigurado } from "@/lib/supabase/config";
 import { LoginForm } from "./login-form";
 
 export const metadata = {
@@ -13,6 +13,7 @@ export default async function LoginPage({
   searchParams: Promise<{ next?: string }>;
 }) {
   const { next } = await searchParams;
+  const desparejo = refDesparejo();
 
   return (
     <div className="w-full">
@@ -25,6 +26,12 @@ export default async function LoginPage({
         <p className="mt-1 text-sm text-muted">
           Gestión de propiedades y métricas de Dakar Propiedades.
         </p>
+
+        {desparejo && (
+          <p className="mt-6 rounded-brand bg-amber-50 p-4 text-sm text-amber-800 ring-1 ring-inset ring-amber-600/20">
+            {desparejo}
+          </p>
+        )}
 
         {supabaseConfigurado ? (
           <LoginForm next={next ?? "/admin"} />
