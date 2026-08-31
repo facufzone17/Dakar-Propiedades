@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabaseConfigurado } from "@/lib/supabase/config";
-import { crearClienteServidor } from "@/lib/supabase/server";
+import { crearClientePublico } from "@/lib/supabase/publico";
 
 const TIPOS = new Set(["whatsapp", "llamada", "tasacion"]);
 
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
 
-  const sb = await crearClienteServidor();
+  const sb = crearClientePublico();
   const { error } = await sb.from("eventos_lead").insert({
     tipo: body.tipo,
     propiedad_id: body.propiedadId ?? null,

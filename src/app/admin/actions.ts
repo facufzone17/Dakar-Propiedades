@@ -1,11 +1,18 @@
 "use server";
 
+import { cookies, headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { EstadoPropiedad, Operacion, TipoPropiedad } from "@/data/propiedades";
 import { TIPOS_PROPIEDAD } from "@/data/propiedades";
-import { ADMIN_EMAIL, ADMIN_USUARIO, supabaseConfigurado } from "@/lib/supabase/config";
-import { crearClienteServidor } from "@/lib/supabase/server";
+import {
+  COOKIE_PANEL,
+  credencialesValidas,
+  crearTokenDeSesion,
+  opcionesCookie,
+} from "@/lib/panel-auth";
+import { BUCKET_FOTOS } from "@/lib/supabase/config";
+import { crearClientePanel } from "@/lib/supabase/panel";
 
 /* ------------------------------------------------------------------ auth --- */
 
@@ -13,45 +20,53 @@ export async function iniciarSesion(
   _prev: { error?: string } | null,
   formData: FormData,
 ): Promise<{ error?: string }> {
-  if (!supabaseConfigurado) {
-    return { error: "Falta configurar Supabase (variables de entorno)." };
-  }
-  const usuarioRaw = String(formData.get("usuario") ?? "").trim();
+  const usuario = String(formData.get("usuario") ?? "");
   const password = String(formData.get("password") ?? "");
   const next = String(formData.get("next") ?? "/admin");
 
-  const email =
-    usuarioRaw.toLowerCase() === ADMIN_USUARIO || !usuarioRaw.includes("@")
-      ? ADMIN_EMAIL
-      : usuarioRaw;
-
-  const sb = await crearClienteServidor();
-  const { error } = await sb.auth.signInWithPassword({ email, password }).catch((e) => ({
-    error: { message: `No se pudo contactar a Supabase: ${e?.message ?? e}`, code: "network" },
-  }));
-
-  if (error) {
-    // Solo las credenciales mal cargadas son "culpa" de quien entra. Cualquier
-    // otra cosa (API key, red, proveedor de email apagado) se muestra tal cual:
-    // esconderla detrás de un mensaje genérico hace imposible diagnosticar.
-    const credenciales =
-      "code" in error && (error.code === "invalid_credentials" || error.code === "email_not_confirmed");
-    return {
-      error: credenciales
-        ? "Usuario o contraseña incorrectos."
-        : `No se pudo iniciar sesión: ${error.message}`,
-    };
+  if (!credencialesValidas(usuario, password)) {
+    return { error: "Usuario o contraseña incorrectos." };
   }
 
-  redirect(next.startsWith("/admin") ? next : "/admin");
+  // `secure` solo si la request vino por https, si no el navegador descarta el
+  // cookie en http://localhost y el login parece no hacer nada.
+  const proto = (await headers()).get("x-forwarded-proto") ?? "http";
+  const store = await cookies();
+  store.set(COOKIE_PANEL, await crearTokenDeSesion(), opcionesCookie(proto === "https"));
+
+  redirect(next.startsWith("/admin") && next !== "/admin/login" ? next : "/admin");
 }
 
 export async function cerrarSesion() {
-  if (supabaseConfigurado) {
-    const sb = await crearClienteServidor();
-    await sb.auth.signOut();
-  }
+  (await cookies()).delete(COOKIE_PANEL);
   redirect("/admin/login");
+}
+
+/* ----------------------------------------------------------------- fotos --- */
+
+/**
+ * Sube una foto al bucket público y devuelve su URL. Va por el servidor
+ * porque el navegador ya no tiene sesión de Supabase con la que escribir.
+ */
+export async function subirFoto(
+  formData: FormData,
+): Promise<{ url?: string; error?: string }> {
+  const file = formData.get("file");
+  const carpeta = String(formData.get("carpeta") ?? "nuevas");
+  if (!(file instanceof File) || file.size === 0) return { error: "Archivo vacío." };
+
+  const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+  const path = `${carpeta}/${crypto.randomUUID()}.${ext}`;
+
+  const sb = await crearClientePanel();
+  const { error } = await sb.storage.from(BUCKET_FOTOS).upload(path, file, {
+    cacheControl: "3600",
+    contentType: file.type || undefined,
+    upsert: false,
+  });
+  if (error) return { error: error.message };
+
+  return { url: sb.storage.from(BUCKET_FOTOS).getPublicUrl(path).data.publicUrl };
 }
 
 /* ------------------------------------------------------------- propiedades --- */
@@ -75,7 +90,7 @@ export async function guardarPropiedad(
   _prev: { error?: string } | null,
   formData: FormData,
 ): Promise<{ error?: string }> {
-  const sb = await crearClienteServidor();
+  const sb = await crearClientePanel();
 
   const id = String(formData.get("id") ?? "").trim();
   const operacion = String(formData.get("operacion") ?? "") as Operacion;
@@ -132,14 +147,14 @@ export async function guardarPropiedad(
 }
 
 export async function cambiarEstadoPropiedad(id: string, estado: EstadoPropiedad) {
-  const sb = await crearClienteServidor();
+  const sb = await crearClientePanel();
   const { error } = await sb.from("propiedades").update({ estado }).eq("id", id);
   if (error) throw new Error(error.message);
   revalidarCatalogo(id);
 }
 
 export async function eliminarPropiedad(id: string) {
-  const sb = await crearClienteServidor();
+  const sb = await crearClientePanel();
   const { error } = await sb.from("propiedades").delete().eq("id", id);
   if (error) throw new Error(error.message);
   revalidarCatalogo(id);

@@ -2,14 +2,13 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { crearClienteNavegador } from "@/lib/supabase/client";
-import { BUCKET_FOTOS } from "@/lib/supabase/config";
+import { subirFoto } from "@/app/admin/actions";
 import { IconAbajo, IconArriba, IconBasura, IconMas } from "./icons";
 
 /**
- * Sube al bucket público `propiedades` de Storage desde el navegador (el usuario
- * está autenticado, la RLS lo permite). Devuelve las URLs públicas ordenadas;
- * la primera es la portada.
+ * Sube al bucket público `propiedades` de Storage a través de una server action:
+ * el navegador ya no tiene sesión de Supabase con la que escribir. Devuelve las
+ * URLs públicas ordenadas; la primera es la portada.
  */
 export function FotoUploader({
   fotos,
@@ -28,21 +27,17 @@ export function FotoUploader({
     if (!files?.length) return;
     setSubiendo(true);
     setError(null);
-    const sb = crearClienteNavegador();
     const nuevas: string[] = [];
     for (const file of Array.from(files)) {
-      const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
-      const path = `${carpeta}/${crypto.randomUUID()}.${ext}`;
-      const { error: e } = await sb.storage.from(BUCKET_FOTOS).upload(path, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-      if (e) {
-        setError(e.message);
+      const fd = new FormData();
+      fd.set("file", file);
+      fd.set("carpeta", carpeta);
+      const { url, error: e } = await subirFoto(fd);
+      if (e || !url) {
+        setError(e ?? "No se pudo subir la foto.");
         break;
       }
-      const { data } = sb.storage.from(BUCKET_FOTOS).getPublicUrl(path);
-      nuevas.push(data.publicUrl);
+      nuevas.push(url);
     }
     setFotos([...fotos, ...nuevas]);
     setSubiendo(false);

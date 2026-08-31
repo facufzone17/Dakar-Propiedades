@@ -1,6 +1,6 @@
 import "server-only";
 import type { Operacion } from "@/data/propiedades";
-import { crearClienteServidor } from "./supabase/server";
+import { crearClientePanel } from "./supabase/panel";
 
 const DIA = 86_400_000;
 
@@ -34,7 +34,7 @@ type FilaMin = {
 type Evento = { propiedad_id: string | null; tipo: string; created_at: string };
 
 export async function obtenerMetricas(): Promise<Metricas> {
-  const sb = await crearClienteServidor();
+  const sb = await crearClientePanel();
   const ahora = Date.now();
 
   const [{ data: props }, { data: eventos }] = await Promise.all([

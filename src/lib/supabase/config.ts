@@ -10,21 +10,6 @@ const URL_ENV = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 export const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 export const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
 
-/** El correo real detrás del usuario "desarrollos mf" del login. */
-export const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "facufernandezzone@gmail.com";
-
-/** Alias que se acepta en el campo "Usuario" del login. */
-export const ADMIN_USUARIO = "desarrollos mf";
-
-/**
- * TEMPORAL — panel sin login para poder mostrarlo.
- *
- * Con esto en `true` cualquiera que llegue a /admin entra. La RLS sigue
- * protegiendo la base: sin sesión solo se puede LEER el catálogo activo, no
- * escribir. Volver a `false` (o borrar la constante) antes de producción.
- */
-export const PANEL_ABIERTO = true;
-
 /** El `ref` del proyecto va firmado dentro de la anon key: es la fuente de verdad. */
 function refDeLaKey(): string | null {
   try {
@@ -63,14 +48,6 @@ function resolverUrl(): string {
 export const SUPABASE_URL = resolverUrl();
 
 export const supabaseConfigurado = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
-
-/** Mensaje para mostrar en el panel cuando la variable de entorno está mal. */
-export function refDesparejo(): string | null {
-  if (!supabaseConfigurado || !URL_ENV) return null;
-  return SUPABASE_URL === URL_ENV
-    ? null
-    : `Ojo: NEXT_PUBLIC_SUPABASE_URL dice "${URL_ENV}", que no es el proyecto de la anon key. Estoy usando ${SUPABASE_URL}. Corregí la variable en Vercel cuando puedas.`;
-}
 
 export const supabaseAdminConfigurado = Boolean(SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY);
 

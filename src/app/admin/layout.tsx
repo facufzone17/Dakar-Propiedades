@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { AdminSidebar } from "@/components/admin/sidebar";
-import { PANEL_ABIERTO, supabaseConfigurado } from "@/lib/supabase/config";
-import { crearClienteServidor } from "@/lib/supabase/server";
+import { COOKIE_PANEL, usuarioDeSesion } from "@/lib/panel-auth";
+import { panelSoloLectura } from "@/lib/supabase/panel";
 
 export const metadata: Metadata = {
   title: "Panel — Dakar Propiedades",
@@ -9,17 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  let email: string | null = null;
-  if (supabaseConfigurado) {
-    const sb = await crearClienteServidor();
-    const {
-      data: { user },
-    } = await sb.auth.getUser();
-    email = user?.email ?? null;
-  }
+  const usuario = await usuarioDeSesion((await cookies()).get(COOKIE_PANEL)?.value);
 
-  // Sin sesión (o sin Supabase) solo llega acá /admin/login: se muestra suelto.
-  if (!email && !PANEL_ABIERTO) {
+  // Sin sesión el middleware ya mandó al login: se muestra suelto, sin sidebar.
+  if (!usuario) {
     return (
       <div className="min-h-screen bg-[#f6f6f4] text-ink">
         <main className="mx-auto flex min-h-screen max-w-md items-center px-5">{children}</main>
@@ -29,14 +23,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="min-h-screen bg-[#f6f6f4] text-ink">
-      {!email && (
+      {panelSoloLectura && (
         <p className="bg-amber-100 px-5 py-2 text-center text-sm text-amber-900">
-          Modo demo: el panel está abierto sin login. Sin sesión se puede mirar, pero no
-          guardar cambios.
+          Falta <code>SUPABASE_SERVICE_ROLE_KEY</code>: el panel muestra el catálogo pero no
+          puede guardar cambios.
         </p>
       )}
       <div className="mx-auto flex max-w-[1400px] gap-6 px-4 py-6 lg:px-6">
-        <AdminSidebar email={email ?? "Sin sesión — modo demo"} />
+        <AdminSidebar email={usuario} />
         <main className="min-w-0 flex-1 pb-16">{children}</main>
       </div>
     </div>

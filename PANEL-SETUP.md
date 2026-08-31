@@ -17,16 +17,21 @@ Supabase → **SQL Editor** → New query → pegar y correr, en orden:
 1. `supabase/migrations/0001_init.sql` (tablas, RLS, bucket de Storage)
 2. `supabase/seed.sql` (las 18 propiedades actuales)
 
-## 3. Crear el usuario del panel
+## 3. Acceso al panel
 
-Supabase → **Authentication → Users → Add user**:
+El panel **no usa Supabase Auth**. Entra con usuario y contraseña propios,
+validados contra un cookie firmado (HMAC): anda aunque la base esté caída o mal
+configurada, que es justo lo que antes rompía el ingreso.
 
-- Email: `facufernandezzone@gmail.com`
-- Password: `zamponidevoto`
-- ✅ **Auto Confirm User**
+Credenciales actuales (de demo):
 
-(En el login del panel se escribe `desarrollos mf` como usuario; el sistema lo
-traduce a ese email.)
+| Usuario | Contraseña |
+|---|---|
+| `dakarpropiedades` | `123` |
+
+Se cambian sin tocar código con las variables `PANEL_USUARIO` y
+`PANEL_PASSWORD`. **Antes de entregar el sitio** hay que poner una contraseña
+real y un `PANEL_SECRET` largo al azar.
 
 ## 4. Variables de entorno
 
@@ -37,10 +42,15 @@ Supabase → **Project Settings → API**. Copiar a `.env.local` (local) y a
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | `https://<ref>.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | anon / publishable key |
-| `ADMIN_EMAIL` | `facufernandezzone@gmail.com` |
+| `SUPABASE_SERVICE_ROLE_KEY` | service_role key |
+| `PANEL_USUARIO` | usuario del panel (opcional; por defecto `dakarpropiedades`) |
+| `PANEL_PASSWORD` | contraseña del panel (opcional; por defecto `123`) |
+| `PANEL_SECRET` | cadena larga al azar para firmar el cookie de sesión |
 
-`SUPABASE_SERVICE_ROLE_KEY` no es necesaria en runtime (solo la pediría un seed
-por script; acá el seed se hace con SQL).
+`SUPABASE_SERVICE_ROLE_KEY` **sí** hace falta en runtime: como el panel ya no
+inicia sesión en Supabase, la RLS lo trata como anónimo y sin ese rol solo
+podría leer las propiedades activas. El panel avisa con un cartel amarillo
+cuando falta. Es una clave de servidor: nunca lleva el prefijo `NEXT_PUBLIC_`.
 
 ## 5. Redeploy en Vercel
 

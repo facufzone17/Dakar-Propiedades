@@ -17,7 +17,7 @@ export function LoginForm({ next }: { next: string }) {
           name="usuario"
           autoComplete="username"
           required
-          defaultValue="desarrollos mf"
+          defaultValue="dakarpropiedades"
           className="mt-1.5 min-h-[48px] w-full rounded-brand border border-line bg-white px-3.5 text-[15px] focus-visible:outline-offset-2"
         />
       </label>
