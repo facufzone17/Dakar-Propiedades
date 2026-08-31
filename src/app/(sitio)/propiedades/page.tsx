@@ -4,6 +4,7 @@ import { PropiedadCard } from "@/components/propiedad-card";
 import { ArrowRightIcon } from "@/components/icons";
 import type { Filtros } from "@/data/propiedades";
 import { facetasPorOperacion, listarPropiedadesPublicas } from "@/lib/propiedades";
+import { obtenerTextos } from "@/lib/textos";
 
 export const revalidate = 60;
 
@@ -26,15 +27,16 @@ export default async function PropiedadesPage({
     precioMax: primero(sp.precioMax),
     ambientes: primero(sp.ambientes),
   };
-  const [resultados, facetas] = await Promise.all([
+  const [resultados, facetas, textos] = await Promise.all([
     listarPropiedadesPublicas(filtros),
     facetasPorOperacion(filtros.operacion),
+    obtenerTextos(),
   ]);
 
   return (
     <div className="mx-auto max-w-[1400px] px-5 pb-20 pt-32 lg:px-10 lg:pb-28 lg:pt-40">
       <h1 className="max-w-[16ch] text-h2 font-semibold tracking-[-0.02em] text-balance">
-        Propiedades
+        {textos.propiedades_titulo}
       </h1>
       <p className="mt-4 max-w-[52ch] text-lg text-muted">
         Toda la cartera de Dakar, en venta y alquiler.

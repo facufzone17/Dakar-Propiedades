@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cerrarSesion } from "@/app/admin/actions";
-import { IconPropiedades, IconResumen, IconSalir } from "./icons";
+import { IconPropiedades, IconResumen, IconSalir, IconTextos } from "./icons";
 
 const LINKS = [
   { href: "/admin", label: "Resumen", Icon: IconResumen, exacto: true },
   { href: "/admin/propiedades", label: "Propiedades", Icon: IconPropiedades, exacto: false },
+  { href: "/admin/textos", label: "Títulos del sitio", Icon: IconTextos, exacto: false },
 ];
 
 export function AdminSidebar({ email }: { email: string }) {

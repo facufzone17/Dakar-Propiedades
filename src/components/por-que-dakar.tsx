@@ -5,37 +5,42 @@
  *
  * TODO (copy de marca): estos tres textos son la lectura del posicionamiento que
  * hicimos nosotros, no palabras de Dakar. Son los primeros candidatos a
- * reemplazar cuando haya charla con ellos.
+ * reemplazar cuando haya charla con ellos. Los títulos ya se editan desde el
+ * panel (/admin/textos); los párrafos siguen acá.
  *
  * La reseña del final SÍ es real y pública (Google Maps, 5★). No tocar el texto.
  */
+import { obtenerTextos } from "@/lib/textos";
+
 const MOTIVOS = [
   {
     n: "01",
-    titulo: "Cerramos rápido",
+    clave: "home_porque_1",
     texto:
       "Se opera con quien toma las decisiones. Menos intermediarios en el medio, menos tiempo perdido entre la primera visita y la firma.",
   },
   {
     n: "02",
-    titulo: "A buen precio",
+    clave: "home_porque_2",
     texto:
       "La tasación sale de lo que se está vendiendo hoy en la zona, no de una expectativa. Un precio realista es lo que hace que la operación se cierre.",
   },
   {
     n: "03",
-    titulo: "Conocemos el barrio",
+    clave: "home_porque_3",
     texto:
       "Oficina sobre Av. Francisco Beiró, en Villa Devoto, y cartera repartida por toda la Capital. Sabemos qué vale cada cuadra.",
   },
-];
+] as const;
 
-export function PorQueDakar() {
+export async function PorQueDakar() {
+  const textos = await obtenerTextos();
+
   return (
     <section className="bg-ink text-white">
       <div className="mx-auto max-w-[1400px] px-5 py-16 lg:px-10 lg:py-24">
         <h2 className="max-w-[14ch] text-h2 font-semibold tracking-[-0.02em] text-balance">
-          Por qué Dakar
+          {textos.home_porque_titulo}
         </h2>
 
         <ol className="mt-10 grid gap-10 lg:mt-16 lg:grid-cols-3 lg:gap-12">
@@ -43,7 +48,7 @@ export function PorQueDakar() {
             <li key={m.n} className="border-t border-white/20 pt-6">
               <span className="block text-lg font-semibold text-white/50">{m.n}</span>
               <h3 className="mt-3 text-2xl font-semibold tracking-tight lg:text-3xl">
-                {m.titulo}
+                {textos[m.clave]}
               </h3>
               <p className="mt-3 text-lg leading-relaxed text-white/75">{m.texto}</p>
             </li>

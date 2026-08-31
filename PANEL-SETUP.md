@@ -15,7 +15,8 @@ región `South America (São Paulo)`.
 Supabase → **SQL Editor** → New query → pegar y correr, en orden:
 
 1. `supabase/migrations/0001_init.sql` (tablas, RLS, bucket de Storage)
-2. `supabase/seed.sql` (las 18 propiedades actuales)
+2. `supabase/migrations/0002_textos_sitio.sql` (títulos editables del sitio)
+3. `supabase/seed.sql` (las 18 propiedades actuales)
 
 ## 3. Acceso al panel
 
@@ -68,6 +69,11 @@ Supabase y el panel queda operativo.
   Fotos nuevas se suben a Supabase Storage. Estados: **Activa** (en el sitio),
   **Pausada** (fuera del sitio), **Cerrada** (vendida/alquilada, cuenta para
   métricas).
+- **Títulos del sitio**: los títulos de cada página (portada, secciones de la
+  home, y el título de Propiedades, Tasación, Nosotros y Contacto) se editan
+  desde `/admin/textos`. Solo títulos: el resto del copy y el diseño no se
+  tocan. Un campo vacío vuelve al título original, así que no hay forma de
+  romper el sitio desde ahí. El cambio se ve en el sitio apenas se guarda.
 - Las consultas se registran cuando un visitante toca "Consultar por WhatsApp",
   "Llamar" o envía el formulario de tasación.
 

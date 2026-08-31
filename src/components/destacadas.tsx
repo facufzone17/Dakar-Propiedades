@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { destacadasPublicas } from "@/lib/propiedades";
+import { obtenerTextos } from "@/lib/textos";
 import { PropiedadCard } from "./propiedad-card";
 import { ArrowRightIcon } from "./icons";
 
 export async function Destacadas() {
-  const props = await destacadasPublicas();
+  const [props, textos] = await Promise.all([destacadasPublicas(), obtenerTextos()]);
 
   return (
     <section className="bg-bg">
@@ -12,7 +13,7 @@ export async function Destacadas() {
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <h2 className="max-w-[16ch] text-h2 font-semibold tracking-[-0.02em] text-balance">
-              Propiedades destacadas
+              {textos.home_destacadas_titulo}
             </h2>
             <p className="mt-4 max-w-[46ch] text-lg text-muted">
               Una selección de la cartera. Venta y alquiler en CABA y alrededores.

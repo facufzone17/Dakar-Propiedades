@@ -2,6 +2,9 @@ import Link from "next/link";
 import { ArrowRightIcon } from "@/components/icons";
 import { SITIO } from "@/config/site";
 import { PROPIEDADES } from "@/data/propiedades";
+import { obtenerTextos } from "@/lib/textos";
+
+export const revalidate = 60;
 
 export const metadata = {
   title: "Nosotros — Dakar Propiedades",
@@ -17,7 +20,8 @@ export const metadata = {
  * TODO: falta el año en que abrieron. Cuando lo confirmen, entra en el primer
  * párrafo, que hoy evita a propósito hablar de trayectoria en años.
  */
-export default function NosotrosPage() {
+export default async function NosotrosPage() {
+  const textos = await obtenerTextos();
   const barriosCaba = new Set(
     PROPIEDADES.filter((p) => p.zona === "CABA").map((p) => p.barrio),
   ).size;
@@ -25,7 +29,7 @@ export default function NosotrosPage() {
   return (
     <div className="mx-auto max-w-[1400px] px-5 pb-20 pt-32 lg:px-10 lg:pb-28 lg:pt-40">
       <h1 className="max-w-[16ch] text-h2 font-semibold tracking-[-0.02em] text-balance">
-        Una inmobiliaria de barrio
+        {textos.nosotros_titulo}
       </h1>
 
       <div className="mt-8 grid gap-12 lg:grid-cols-2 lg:gap-16">
@@ -48,7 +52,7 @@ export default function NosotrosPage() {
         </div>
 
         <div className="rounded-brand bg-bg-subtle p-7 lg:p-9">
-          <h2 className="text-2xl font-semibold tracking-tight">Qué hacemos</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">{textos.nosotros_que_hacemos}</h2>
           <ul className="mt-6 divide-y divide-line">
             {[
               ["Venta", "Publicamos, mostramos y cerramos la operación."],

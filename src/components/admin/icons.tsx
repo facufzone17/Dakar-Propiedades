@@ -25,6 +25,12 @@ export const IconPropiedades = ({ className }: P) => (
   </svg>
 );
 
+export const IconTextos = ({ className }: P) => (
+  <svg {...base} className={className}>
+    <path d="M4 7V5h16v2M12 5v14M9 19h6" />
+  </svg>
+);
+
 export const IconSalir = ({ className }: P) => (
   <svg {...base} className={className}>
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />

@@ -12,7 +12,8 @@ import {
   opcionesCookie,
 } from "@/lib/panel-auth";
 import { BUCKET_FOTOS } from "@/lib/supabase/config";
-import { crearClientePanel } from "@/lib/supabase/panel";
+import { crearClientePanel, panelSoloLectura } from "@/lib/supabase/panel";
+import { CAMPOS_TEXTO, MAX_LARGO_TITULO, TEXTOS_SITIO } from "@/lib/textos";
 
 /* ------------------------------------------------------------------ auth --- */
 
@@ -159,4 +160,56 @@ export async function eliminarPropiedad(id: string) {
   if (error) throw new Error(error.message);
   revalidarCatalogo(id);
   redirect("/admin/propiedades");
+}
+
+/* ----------------------------------------------------------------- textos --- */
+
+/**
+ * Guarda los títulos editables del sitio (/admin/textos).
+ *
+ * Solo se persiste lo que difiere del texto por defecto: si el campo se vacía o
+ * se vuelve a escribir el original, se borra la fila y el título vuelve a salir
+ * del código. Así la tabla nunca guarda ruido y "restaurar" es gratis.
+ */
+export async function guardarTextos(
+  _prev: { error?: string; ok?: boolean } | null,
+  formData: FormData,
+): Promise<{ error?: string; ok?: boolean }> {
+  if (panelSoloLectura) {
+    return { error: "El panel está en modo lectura: falta SUPABASE_SERVICE_ROLE_KEY." };
+  }
+
+  const aGuardar: { clave: string; valor: string }[] = [];
+  const aBorrar: string[] = [];
+
+  for (const campo of CAMPOS_TEXTO) {
+    // Un campo ausente del form (no se envió) no se toca.
+    if (!formData.has(campo.clave)) continue;
+    const valor = String(formData.get(campo.clave) ?? "").trim().replace(/\s+/g, " ");
+
+    if (valor.length > MAX_LARGO_TITULO) {
+      return {
+        error: `“${campo.label}” tiene ${valor.length} caracteres; el máximo es ${MAX_LARGO_TITULO}.`,
+      };
+    }
+    if (!valor || valor === campo.porDefecto) aBorrar.push(campo.clave);
+    else aGuardar.push({ clave: campo.clave, valor });
+  }
+
+  const sb = await crearClientePanel();
+
+  if (aGuardar.length) {
+    const { error } = await sb.from("textos_sitio").upsert(aGuardar, { onConflict: "clave" });
+    if (error) return { error: error.message };
+  }
+  if (aBorrar.length) {
+    const { error } = await sb.from("textos_sitio").delete().in("clave", aBorrar);
+    if (error) return { error: error.message };
+  }
+
+  // Las páginas del sitio son ISR: sin esto el cambio tardaría hasta un minuto.
+  for (const grupo of TEXTOS_SITIO) revalidatePath(grupo.ruta);
+  revalidatePath("/admin/textos");
+
+  return { ok: true };
 }

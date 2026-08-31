@@ -1,6 +1,9 @@
 import { FormTasacion } from "@/components/form-tasacion";
 import { CheckIcon, WhatsappIcon } from "@/components/icons";
 import { SITIO, whatsappUrl } from "@/config/site";
+import { obtenerTextos } from "@/lib/textos";
+
+export const revalidate = 60;
 
 export const metadata = {
   title: "Tasá tu propiedad — Dakar Propiedades",
@@ -14,13 +17,15 @@ const PASOS = [
   "Te pasamos un precio realista para vender o alquilar, sin compromiso.",
 ];
 
-export default function TasacionPage() {
+export default async function TasacionPage() {
+  const textos = await obtenerTextos();
+
   return (
     <div className="mx-auto max-w-[1400px] px-5 pb-20 pt-32 lg:px-10 lg:pb-28 lg:pt-40">
       <div className="grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
         <div>
           <h1 className="max-w-[14ch] text-h2 font-semibold tracking-[-0.02em] text-balance">
-            Tasá tu propiedad
+            {textos.tasacion_titulo}
           </h1>
           <p className="mt-5 max-w-[46ch] text-lg text-muted lg:text-xl">
             Un precio realista es lo que hace que la operación se cierre. Contanos qué

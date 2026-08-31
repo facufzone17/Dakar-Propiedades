@@ -72,7 +72,9 @@ con los datos cargados y abren el chat. Funciona de verdad, sin API keys.
 - [ ] Fotos propias, si Dakar tiene mejores que las del portal
 - [ ] Revisar el copy de "Por qué Dakar" con ellos — es lectura del posicionamiento, no
       palabras suyas
-- [ ] Panel `/admin` con Supabase Auth para que carguen y den de baja propiedades solos
+- [ ] Correr `supabase/migrations/0002_textos_sitio.sql` en el proyecto de Supabase
+      (habilita la sección "Títulos del sitio" del panel; sin la tabla, el sitio
+      muestra los títulos por defecto y guardar falla)
 
 ## Chequeos
 

@@ -1,5 +1,8 @@
 import { ClockIcon, PhoneIcon, PinIcon, WhatsappIcon } from "@/components/icons";
 import { SITIO, whatsappUrl } from "@/config/site";
+import { obtenerTextos } from "@/lib/textos";
+
+export const revalidate = 60;
 
 export const metadata = {
   title: "Contacto — Dakar Propiedades",
@@ -10,11 +13,13 @@ const DIRECCION_COMPLETA = `${SITIO.direccion}, ${SITIO.localidad}`;
 const MAPA_EMBED = `https://maps.google.com/maps?q=${encodeURIComponent(DIRECCION_COMPLETA)}&z=16&output=embed`;
 const MAPA_LINK = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(DIRECCION_COMPLETA)}`;
 
-export default function ContactoPage() {
+export default async function ContactoPage() {
+  const textos = await obtenerTextos();
+
   return (
     <div className="mx-auto max-w-[1400px] px-5 pb-20 pt-32 lg:px-10 lg:pb-28 lg:pt-40">
       <h1 className="max-w-[14ch] text-h2 font-semibold tracking-[-0.02em] text-balance">
-        Contacto
+        {textos.contacto_titulo}
       </h1>
       <p className="mt-5 max-w-[48ch] text-lg text-muted lg:text-xl">
         La vía más rápida es WhatsApp. También podés pasar por la oficina en el horario

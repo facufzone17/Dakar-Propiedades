@@ -1,8 +1,11 @@
 import Image from "next/image";
 import heroEdificios from "@/assets/hero-edificios.jpg";
+import { obtenerTextos } from "@/lib/textos";
 import { HeroSearch } from "./hero-search";
 
-export function Hero() {
+export async function Hero() {
+  const textos = await obtenerTextos();
+
   return (
     <section className="relative isolate flex min-h-[100svh] flex-col bg-bg">
       {/*
@@ -39,7 +42,7 @@ export function Hero() {
       <div className="on-dark mx-auto flex w-full max-w-[1400px] flex-1 flex-col px-5 pb-24 pt-32 lg:px-10 lg:pb-10 lg:pt-40">
         <div className="flex-1">
           <h1 className="max-w-[13ch] text-h1 font-semibold tracking-[-0.02em] text-balance text-white">
-            Conocemos la zona
+            {textos.home_hero_titulo}
           </h1>
           <p className="mt-6 max-w-[38ch] text-lg font-medium text-white/90 lg:text-xl">
             Inmobiliaria en Av. Francisco Beiró, Villa Devoto.
