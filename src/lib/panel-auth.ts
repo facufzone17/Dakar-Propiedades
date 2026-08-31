@@ -19,7 +19,7 @@
  * secreto a variables de entorno en Vercel y dejar estos en blanco.
  */
 const USUARIO = process.env.PANEL_USUARIO ?? "dakarpropiedades";
-const PASSWORD = process.env.PANEL_PASSWORD ?? "Urquiza-Talcahuano-8127!";
+const PASSWORD = process.env.PANEL_PASSWORD ?? "dakarpropiedades*";
 
 /** Clave con la que se firma el cookie de sesión. Cambiarla cierra las sesiones. */
 const SECRETO = process.env.PANEL_SECRET ?? "DdKFBCfKRHk0TYqxDprgQW_jKOtz9vIVV4Bw4L2LK3k";
