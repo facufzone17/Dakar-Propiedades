@@ -70,10 +70,16 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-14 border-t border-white/20 pt-8">
+        <div className="mt-14 flex flex-wrap items-center justify-between gap-3 border-t border-white/20 pt-8">
           <p className="text-white/60">
             © {new Date().getFullYear()} {SITIO.nombre}
           </p>
+          <Link
+            href="/admin"
+            className="inline-flex min-h-[44px] items-center text-white/40 transition-colors hover:text-white/80"
+          >
+            Acceso panel
+          </Link>
           {/* TODO: si Dakar tiene matrícula CUCICBA, va acá — es lo que muestra la
               competencia de la zona y da confianza legal (brief §5). */}
         </div>

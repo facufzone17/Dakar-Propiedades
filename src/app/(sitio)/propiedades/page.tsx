@@ -2,7 +2,10 @@ import Link from "next/link";
 import { FiltrosPropiedades } from "@/components/filtros-propiedades";
 import { PropiedadCard } from "@/components/propiedad-card";
 import { ArrowRightIcon } from "@/components/icons";
-import { filtrar, type Filtros } from "@/data/propiedades";
+import type { Filtros } from "@/data/propiedades";
+import { facetasPorOperacion, listarPropiedadesPublicas } from "@/lib/propiedades";
+
+export const revalidate = 60;
 
 export const metadata = {
   title: "Propiedades en venta y alquiler — Dakar Propiedades",
@@ -23,7 +26,10 @@ export default async function PropiedadesPage({
     precioMax: primero(sp.precioMax),
     ambientes: primero(sp.ambientes),
   };
-  const resultados = filtrar(filtros);
+  const [resultados, facetas] = await Promise.all([
+    listarPropiedadesPublicas(filtros),
+    facetasPorOperacion(filtros.operacion),
+  ]);
 
   return (
     <div className="mx-auto max-w-[1400px] px-5 pb-20 pt-32 lg:px-10 lg:pb-28 lg:pt-40">
@@ -36,7 +42,12 @@ export default async function PropiedadesPage({
 
       <h2 className="sr-only">Filtrar propiedades</h2>
       <div className="mt-10">
-        <FiltrosPropiedades filtros={filtros} resultados={resultados.length} />
+        <FiltrosPropiedades
+          filtros={filtros}
+          resultados={resultados.length}
+          tipos={facetas.tipos}
+          barrios={facetas.barrios}
+        />
       </div>
 
       {/* Los títulos de las cards son h3: sin este h2 el orden salta de h1 a h3 */}

@@ -10,21 +10,14 @@ import {
   CheckIcon,
   ClockIcon,
   PinIcon,
-  WhatsappIcon,
 } from "@/components/icons";
 import { PropiedadCard } from "@/components/propiedad-card";
+import { PropiedadCta } from "@/components/propiedad-cta";
 import { SITIO, whatsappUrl } from "@/config/site";
-import {
-  PROPIEDADES,
-  formatearExpensas,
-  formatearPrecio,
-  propiedadPorId,
-  tituloDe,
-} from "@/data/propiedades";
+import { formatearExpensas, formatearPrecio, tituloDe } from "@/data/propiedades";
+import { propiedadPublicaPorId, similaresA } from "@/lib/propiedades";
 
-export function generateStaticParams() {
-  return PROPIEDADES.map((p) => ({ id: p.id }));
-}
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
@@ -32,7 +25,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const p = propiedadPorId(id);
+  const p = await propiedadPublicaPorId(id);
   if (!p) return { title: "Propiedad no encontrada — Dakar Propiedades" };
   return {
     title: `${tituloDe(p)} — ${formatearPrecio(p)} — Dakar Propiedades`,
@@ -46,7 +39,7 @@ export default async function FichaPropiedad({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const p = propiedadPorId(id);
+  const p = await propiedadPublicaPorId(id);
   if (!p) notFound();
 
   const titulo = tituloDe(p);
@@ -66,9 +59,7 @@ export default async function FichaPropiedad({
 
   const mensajeWa = `Hola ${SITIO.nombre}, me interesa la propiedad de ${p.direccion}, ${p.barrio} (${formatearPrecio(p)}). ¿Sigue disponible?`;
 
-  const similares = PROPIEDADES.filter(
-    (o) => o.id !== p.id && o.operacion === p.operacion && o.tipo === p.tipo,
-  ).slice(0, 3);
+  const similares = await similaresA(p, 3);
 
   return (
     <div className="mx-auto max-w-[1400px] px-5 pb-20 pt-28 lg:px-10 lg:pb-28 lg:pt-36">
@@ -158,22 +149,12 @@ export default async function FichaPropiedad({
             </p>
             {expensas && <p className="mt-1 text-lg text-muted">{expensas}</p>}
 
-            <a
-              href={whatsappUrl(mensajeWa)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-7 flex min-h-[56px] items-center justify-center gap-2.5 rounded-brand bg-ink px-6 text-lg font-semibold text-white transition-opacity hover:opacity-90"
-            >
-              <WhatsappIcon className="size-5" />
-              Consultar por WhatsApp
-            </a>
-
-            <a
-              href={SITIO.telefonoHref}
-              className="mt-3 flex min-h-[56px] items-center justify-center gap-2.5 rounded-brand border border-line px-6 text-lg font-semibold transition-colors hover:bg-bg"
-            >
-              Llamar al {SITIO.telefono}
-            </a>
+            <PropiedadCta
+              propiedadId={p.id}
+              whatsappHref={whatsappUrl(mensajeWa)}
+              telefono={SITIO.telefono}
+              telefonoHref={SITIO.telefonoHref}
+            />
 
             <p className="mt-6 border-t border-line pt-5 text-[15px] text-muted">
               {SITIO.direccion}, {SITIO.localidad}

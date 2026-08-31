@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { SITIO, whatsappUrl } from "@/config/site";
+import { registrarConsulta } from "@/lib/track";
 import { ArrowRightIcon, ChevronDownIcon, WhatsappIcon } from "./icons";
 
 /**
@@ -42,6 +43,7 @@ export function FormTasacion() {
       `Quiero: ${datos.operacion}`,
       datos.comentario ? `Comentario: ${datos.comentario}` : null,
     ].filter(Boolean);
+    registrarConsulta("tasacion");
     window.open(whatsappUrl(lineas.join("\n")), "_blank", "noopener,noreferrer");
     setEnviado(true);
   };

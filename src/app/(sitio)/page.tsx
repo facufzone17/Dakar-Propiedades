@@ -4,6 +4,8 @@ import { FranjaConfianza } from "@/components/franja-confianza";
 import { Hero } from "@/components/hero";
 import { PorQueDakar } from "@/components/por-que-dakar";
 
+export const revalidate = 60;
+
 export default function Home() {
   return (
     <>

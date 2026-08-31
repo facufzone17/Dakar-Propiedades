@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { destacadas } from "@/data/propiedades";
+import { destacadasPublicas } from "@/lib/propiedades";
 import { PropiedadCard } from "./propiedad-card";
 import { ArrowRightIcon } from "./icons";
 
-export function Destacadas() {
-  const props = destacadas();
+export async function Destacadas() {
+  const props = await destacadasPublicas();
 
   return (
     <section className="bg-bg">

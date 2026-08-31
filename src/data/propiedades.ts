@@ -19,6 +19,22 @@
 export type Operacion = "venta" | "alquiler";
 export type TipoPropiedad = "Departamento" | "PH" | "Local" | "Galpón" | "Quinta";
 
+/**
+ * Estado de publicación (lo gestiona el panel).
+ *  · activa   → visible en el sitio
+ *  · pausada  → fuera del sitio, se puede reactivar
+ *  · vendida  → cerrada; fuera del sitio pero cuenta para métricas
+ */
+export type EstadoPropiedad = "activa" | "pausada" | "vendida";
+
+export const TIPOS_PROPIEDAD: TipoPropiedad[] = [
+  "Departamento",
+  "PH",
+  "Local",
+  "Galpón",
+  "Quinta",
+];
+
 export type Propiedad = {
   id: string;
   operacion: Operacion;
@@ -42,6 +58,10 @@ export type Propiedad = {
   fotos: string[];
   fuenteUrl: string;
   destacada: boolean;
+  /** Presentes cuando la propiedad viene de Supabase (no del seed estático). */
+  estado?: EstadoPropiedad;
+  creadaEn?: string;
+  cerradaEn?: string | null;
 };
 
 const AP = "https://www.argenprop.com";

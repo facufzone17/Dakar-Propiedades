@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import {
-  PROPIEDADES,
   rangosPrecio,
   type Filtros,
   type Operacion,
@@ -28,9 +27,14 @@ const AMBIENTES = [
 export function FiltrosPropiedades({
   filtros,
   resultados,
+  tipos,
+  barrios,
 }: {
   filtros: Filtros;
   resultados: number;
+  /** Opciones reales de la cartera, ya filtradas por la operación elegida. */
+  tipos: TipoPropiedad[];
+  barrios: string[];
 }) {
   const router = useRouter();
 
@@ -60,18 +64,6 @@ export function FiltrosPropiedades({
     },
     [router, operacion, tipo, barrio, precioMax, ambientes],
   );
-
-  // Las opciones salen de la cartera, filtradas por lo que ya se eligió:
-  // nunca se ofrece un filtro que devuelva cero resultados.
-  const universo = PROPIEDADES.filter(
-    (p) => !operacion || p.operacion === (operacion as Operacion),
-  );
-  const tipos = [...new Set(universo.map((p) => p.tipo))].sort((a, b) =>
-    a.localeCompare(b, "es"),
-  ) as TipoPropiedad[];
-  const barrios = [
-    ...new Set(universo.filter((p) => !tipo || p.tipo === tipo).map((p) => p.barrio)),
-  ].sort((a, b) => a.localeCompare(b, "es"));
 
   const hayFiltros = Boolean(operacion || tipo || barrio || precioMax || ambientes);
 
