@@ -27,11 +27,12 @@ Credenciales actuales (de demo):
 
 | Usuario | Contraseña |
 |---|---|
-| `dakarpropiedades` | `123` |
+| `dakarpropiedades` | ver `PASSWORD` en `src/lib/panel-auth.ts` |
 
 Se cambian sin tocar código con las variables `PANEL_USUARIO` y
-`PANEL_PASSWORD`. **Antes de entregar el sitio** hay que poner una contraseña
-real y un `PANEL_SECRET` largo al azar.
+`PANEL_PASSWORD` en Vercel. **Al entregar el sitio** conviene moverlas a
+variables de entorno (junto con `PANEL_SECRET`) y dejar los defaults del código
+en blanco, para que la contraseña no viva en el repositorio.
 
 ## 4. Variables de entorno
 

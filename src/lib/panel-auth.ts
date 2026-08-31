@@ -12,12 +12,17 @@
  * middleware, que va en el runtime Edge y no tiene el `crypto` de Node.
  */
 
-/** Credenciales del panel. Se pueden cambiar por entorno sin tocar código. */
+/**
+ * Credenciales del panel. Los valores de acá son el default; se pisan por
+ * entorno (`PANEL_USUARIO` / `PANEL_PASSWORD`) sin tocar código. El repo es
+ * privado, pero cuando el sitio se entregue conviene mover la contraseña y el
+ * secreto a variables de entorno en Vercel y dejar estos en blanco.
+ */
 const USUARIO = process.env.PANEL_USUARIO ?? "dakarpropiedades";
-const PASSWORD = process.env.PANEL_PASSWORD ?? "123";
+const PASSWORD = process.env.PANEL_PASSWORD ?? "Urquiza-Talcahuano-8127!";
 
-/** Clave con la que se firma el cookie de sesión. */
-const SECRETO = process.env.PANEL_SECRET ?? "dakar-panel-demo";
+/** Clave con la que se firma el cookie de sesión. Cambiarla cierra las sesiones. */
+const SECRETO = process.env.PANEL_SECRET ?? "DdKFBCfKRHk0TYqxDprgQW_jKOtz9vIVV4Bw4L2LK3k";
 
 export const COOKIE_PANEL = "dakar_panel";
 
