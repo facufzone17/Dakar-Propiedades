@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { PANEL_ABIERTO } from "@/lib/supabase/config";
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
@@ -13,6 +14,10 @@ export async function middleware(request: NextRequest) {
   const esLogin = pathname === "/admin/login";
 
   let response = NextResponse.next({ request });
+
+  // TEMPORAL: panel abierto para poder mostrarlo (ver PANEL_ABIERTO en
+  // src/lib/supabase/config.ts). La RLS sigue impidiendo escribir sin sesión.
+  if (PANEL_ABIERTO) return response;
 
   if (!URL || !KEY) {
     // Sin Supabase configurado no se puede autenticar: dejamos ver el login,
