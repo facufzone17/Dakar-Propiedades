@@ -3,8 +3,7 @@
 import { cookies, headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import type { EstadoPropiedad, Operacion, TipoPropiedad } from "@/data/propiedades";
-import { TIPOS_PROPIEDAD } from "@/data/propiedades";
+import type { EstadoPropiedad, Operacion } from "@/data/propiedades";
 import {
   COOKIE_PANEL,
   credencialesValidas,
@@ -95,13 +94,18 @@ export async function guardarPropiedad(
 
   const id = String(formData.get("id") ?? "").trim();
   const operacion = String(formData.get("operacion") ?? "") as Operacion;
-  const tipo = String(formData.get("tipo") ?? "") as TipoPropiedad;
+  // Tipo de texto libre: se sugiere una lista en el panel pero se acepta
+  // cualquier valor (por ej. "Casa"). Solo se normaliza: sin espacios de sobra
+  // y con la inicial en mayúscula para que quede prolijo en el sitio.
+  let tipo = String(formData.get("tipo") ?? "").trim().replace(/\s+/g, " ");
   const direccion = String(formData.get("direccion") ?? "").trim();
   const barrio = String(formData.get("barrio") ?? "").trim();
   const precio = nOrNull(formData.get("precio"));
 
   if (!["venta", "alquiler"].includes(operacion)) return { error: "Elegí la operación." };
-  if (!TIPOS_PROPIEDAD.includes(tipo)) return { error: "Elegí el tipo de propiedad." };
+  if (!tipo) return { error: "Elegí o escribí el tipo de propiedad." };
+  if (tipo.length > 40) return { error: "El tipo de propiedad no puede pasar de 40 caracteres." };
+  tipo = tipo[0].toUpperCase() + tipo.slice(1);
   if (!direccion) return { error: "La dirección es obligatoria." };
   if (!barrio) return { error: "El barrio es obligatorio." };
   if (precio === null || precio < 0) return { error: "Cargá un precio válido." };

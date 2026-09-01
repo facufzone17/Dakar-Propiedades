@@ -16,7 +16,12 @@ Supabase → **SQL Editor** → New query → pegar y correr, en orden:
 
 1. `supabase/migrations/0001_init.sql` (tablas, RLS, bucket de Storage)
 2. `supabase/migrations/0002_textos_sitio.sql` (títulos editables del sitio)
-3. `supabase/seed.sql` (las 18 propiedades actuales)
+3. `supabase/migrations/0003_tipo_propiedad_libre.sql` (tipo de propiedad de texto libre)
+4. `supabase/seed.sql` (las 18 propiedades actuales)
+
+Si la base ya estaba creada de antes, alcanza con correr los pasos nuevos
+(el 3). Sin ese paso, guardar una propiedad con un tipo fuera de la lista
+original (por ej. "Casa") falla con un error de constraint.
 
 ## 3. Acceso al panel
 

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useActionState, useState } from "react";
 import { guardarPropiedad } from "@/app/admin/actions";
 import { TIPOS_PROPIEDAD, type Propiedad } from "@/data/propiedades";
-import { AreaTexto, Campo, Numero, Selector, Texto } from "./campos";
+import { AreaTexto, Campo, Numero, Selector, SelectorLibre, Texto } from "./campos";
 import { FotoUploader } from "./foto-uploader";
 import { IconMas } from "./icons";
 import { BotonPrimario, Card, TituloSeccion } from "./ui";
@@ -48,11 +48,15 @@ export function PropiedadForm({ propiedad }: { propiedad?: Propiedad }) {
               ]}
             />
           </Campo>
-          <Campo label="Tipo de propiedad">
-            <Selector
+          <Campo
+            label="Tipo de propiedad"
+            ayuda="Elegí una sugerencia o escribí otra (por ej. «Casa»)."
+          >
+            <SelectorLibre
               name="tipo"
               defaultValue={propiedad?.tipo ?? "Departamento"}
-              opciones={TIPOS_PROPIEDAD.map((t) => ({ valor: t, label: t }))}
+              opciones={TIPOS_PROPIEDAD}
+              placeholder="Departamento"
             />
           </Campo>
         </div>

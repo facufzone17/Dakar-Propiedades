@@ -43,6 +43,12 @@ export const IconMas = ({ className }: P) => (
   </svg>
 );
 
+export const IconChevron = ({ className }: P) => (
+  <svg {...base} className={className}>
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+);
+
 export const IconBuscar = ({ className }: P) => (
   <svg {...base} className={className}>
     <circle cx="11" cy="11" r="7" />

@@ -17,7 +17,11 @@
  */
 
 export type Operacion = "venta" | "alquiler";
-export type TipoPropiedad = "Departamento" | "PH" | "Local" | "Galpón" | "Quinta";
+/**
+ * El tipo es texto libre: el panel sugiere los de `TIPOS_PROPIEDAD`, pero el
+ * dueño puede escribir otro (por ej. "Casa") al cargar una propiedad.
+ */
+export type TipoPropiedad = string;
 
 /**
  * Estado de publicación (lo gestiona el panel).
@@ -27,7 +31,8 @@ export type TipoPropiedad = "Departamento" | "PH" | "Local" | "Galpón" | "Quint
  */
 export type EstadoPropiedad = "activa" | "pausada" | "vendida";
 
-export const TIPOS_PROPIEDAD: TipoPropiedad[] = [
+/** Tipos sugeridos en el panel. La lista no es cerrada: se puede cargar otro. */
+export const TIPOS_PROPIEDAD: string[] = [
   "Departamento",
   "PH",
   "Local",
