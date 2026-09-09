@@ -4,9 +4,10 @@ import { PropiedadForm } from "@/components/admin/propiedad-form";
 import { EliminarPropiedadBoton } from "@/components/admin/eliminar-boton";
 import { propiedadDelPanel } from "@/lib/admin-data";
 import { formatearPrecio } from "@/data/propiedades";
+import { SITIO } from "@/config/site";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Editar propiedad — Panel Dakar" };
+export const metadata = { title: `Editar propiedad — Panel ${SITIO.nombre}` };
 
 export default async function EditarPropiedadPage({
   params,

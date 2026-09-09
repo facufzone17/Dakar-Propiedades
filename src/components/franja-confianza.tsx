@@ -1,14 +1,15 @@
 import { PROPIEDADES } from "@/data/propiedades";
 import { SITIO } from "@/config/site";
+import { CountUp } from "./anim/count-up";
+import { Reveal } from "./anim/reveal";
 
 /**
- * Franja de confianza (brief §4): datos reales, no logos de "empresas que confían"
- * — eso no aplica a una inmobiliaria de barrio.
+ * Franja de confianza: datos concretos, no logos de "empresas que confían" — eso
+ * no aplica a una inmobiliaria de barrio.
  *
- * Los números salen de la cartera, así que no se desactualizan solos.
- *
- * TODO: falta el dato de años de trayectoria en Villa Devoto. No está en la
- * investigación y no se puede inventar. Cuando Dakar lo confirme, entra acá.
+ * Los números salen de la cartera, así que no se desactualizan solos. Si el
+ * cliente quiere sumar un dato propio (años de trayectoria, operaciones cerradas),
+ * va como un cuarto ítem del array.
  */
 export function FranjaConfianza() {
   const total = PROPIEDADES.length;
@@ -17,25 +18,25 @@ export function FranjaConfianza() {
   ).size;
 
   const datos = [
-    { valor: `${total}`, label: "propiedades en cartera" },
-    { valor: `${barriosCaba}`, label: "barrios de CABA, más GBA y San Luis" },
-    { valor: "4", label: "servicios: venta, alquiler, tasación y administración" },
+    { valor: total, label: "propiedades en cartera" },
+    { valor: barriosCaba, label: "barrios de CABA, más GBA oeste" },
+    { valor: 4, label: "servicios: venta, alquiler, tasación y administración" },
   ];
 
   return (
-    <section aria-label="Dakar en números" className="bg-bg-subtle">
+    <section aria-label="La inmobiliaria en números" className="bg-bg-subtle">
       <div className="mx-auto max-w-[1400px] px-5 py-14 lg:px-10 lg:py-20">
         <dl className="grid gap-10 sm:grid-cols-3 sm:gap-8">
-          {datos.map((d) => (
-            <div key={d.label}>
+          {datos.map((d, i) => (
+            <Reveal as="div" key={d.label} delay={i * 90}>
               <dt className="sr-only">{d.label}</dt>
               <dd>
                 <span className="block text-5xl font-semibold tracking-[-0.02em] lg:text-6xl">
-                  {d.valor}
+                  <CountUp value={d.valor} />
                 </span>
                 <span className="mt-2 block max-w-[24ch] text-lg text-muted">{d.label}</span>
               </dd>
-            </div>
+            </Reveal>
           ))}
         </dl>
         <p className="mt-10 text-lg text-muted">

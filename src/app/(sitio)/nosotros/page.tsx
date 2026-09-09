@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ArrowRightIcon } from "@/components/icons";
+import { Reveal } from "@/components/anim/reveal";
+import { Typewriter } from "@/components/anim/typewriter";
 import { SITIO } from "@/config/site";
 import { PROPIEDADES } from "@/data/propiedades";
 import { obtenerTextos } from "@/lib/textos";
@@ -7,18 +9,15 @@ import { obtenerTextos } from "@/lib/textos";
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Nosotros — Dakar Propiedades",
+  title: `Nosotros — ${SITIO.nombre}`,
   description:
-    "Inmobiliaria en Av. Francisco Beiró 4227, Villa Devoto. Venta, alquiler, tasación y administración de propiedades.",
+    "Inmobiliaria de la zona oeste. Venta, alquiler, tasación y administración de propiedades.",
 };
 
 /**
- * Sin página de "equipo" ni bios: Dakar no muestra agentes individuales hoy y no
- * se inventan personas (brief §4). Texto simple y fácil de reemplazar cuando
- * ellos pasen el suyo.
- *
- * TODO: falta el año en que abrieron. Cuando lo confirmen, entra en el primer
- * párrafo, que hoy evita a propósito hablar de trayectoria en años.
+ * Sin página de "equipo" ni bios: no se inventan personas. Texto simple y fácil
+ * de reemplazar cuando el cliente pase el suyo. El primer párrafo evita a
+ * propósito hablar de trayectoria en años (dato propio de cada inmobiliaria).
  */
 export default async function NosotrosPage() {
   const textos = await obtenerTextos();
@@ -33,35 +32,46 @@ export default async function NosotrosPage() {
       </h1>
 
       <div className="mt-8 grid gap-12 lg:grid-cols-2 lg:gap-16">
-        <div className="max-w-[60ch] space-y-5 text-lg leading-relaxed text-muted">
+        <Reveal className="max-w-[60ch] space-y-5 text-lg leading-relaxed text-muted">
           <p>
-            Dakar Propiedades trabaja desde {SITIO.direccion}, en {SITIO.localidad}. Es
-            una inmobiliaria de barrio: se atiende en el mostrador de siempre, y la
-            operación se define con quien toma las decisiones.
+            {SITIO.nombre} trabaja desde {SITIO.direccion}, en {SITIO.localidad}. Es una
+            inmobiliaria de barrio: se atiende en el mostrador de siempre, y la operación
+            se define con quien toma las decisiones.
           </p>
           <p>
             Hacemos venta, alquiler, tasación y administración de propiedades. La cartera
-            está repartida en {barriosCaba} barrios de la Capital, más Gran Buenos Aires
-            y San Luis — no solo Devoto, aunque la oficina esté acá.
+            está repartida en {barriosCaba} barrios de la Capital, más Gran Buenos Aires —
+            no solo la zona de la oficina.
           </p>
           <p>
-            La forma más rápida de contactarnos es WhatsApp. Escribinos y te
+            La forma más rápida de contactarnos es WhatsApp o mail. Escribinos y te
             respondemos con lo que necesites saber de cualquier propiedad de la cartera,
             o para coordinar una tasación.
           </p>
-        </div>
+        </Reveal>
 
         <div className="rounded-brand bg-bg-subtle p-7 lg:p-9">
-          <h2 className="text-2xl font-semibold tracking-tight">{textos.nosotros_que_hacemos}</h2>
+          <Typewriter
+            as="h2"
+            text={textos.nosotros_que_hacemos}
+            speed={26}
+            className="block text-2xl font-semibold tracking-tight"
+          />
           <ul className="mt-6 divide-y divide-line">
             {[
               ["Venta", "Publicamos, mostramos y cerramos la operación."],
               ["Alquiler", "Desde la búsqueda de inquilino hasta la firma."],
               ["Tasación", "Un precio realista, con lo que se opera hoy en la zona."],
               ["Administración", "Gestión de propiedades alquiladas para terceros."],
-            ].map(([titulo, texto]) => (
+            ].map(([titulo, texto], i) => (
               <li key={titulo} className="py-5 first:pt-0 last:pb-0">
-                <h3 className="text-xl font-semibold tracking-tight">{titulo}</h3>
+                <Typewriter
+                  as="h3"
+                  text={titulo}
+                  speed={26}
+                  startDelay={260 + i * 190}
+                  className="block text-xl font-semibold tracking-tight"
+                />
                 <p className="mt-1 text-lg text-muted">{texto}</p>
               </li>
             ))}
@@ -69,10 +79,10 @@ export default async function NosotrosPage() {
 
           <Link
             href="/tasacion"
-            className="mt-8 inline-flex min-h-[56px] items-center gap-2.5 rounded-brand bg-ink px-8 text-lg font-semibold text-white transition-opacity hover:opacity-90"
+            className="lift group mt-8 inline-flex min-h-[56px] items-center gap-2.5 rounded-brand bg-ink px-8 text-lg font-semibold text-white hover:opacity-95"
           >
             Pedir tasación
-            <ArrowRightIcon className="size-[18px]" />
+            <ArrowRightIcon className="nudge size-[18px]" />
           </Link>
         </div>
       </div>

@@ -1,5 +1,5 @@
 -- ============================================================================
--- Dakar Propiedades — textos editables del sitio
+-- Inmobiliaria (template) — textos editables del sitio
 -- Pegar y ejecutar en Supabase → SQL Editor, después de 0001_init.sql.
 -- ============================================================================
 

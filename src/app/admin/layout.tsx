@@ -3,9 +3,10 @@ import { cookies } from "next/headers";
 import { AdminSidebar } from "@/components/admin/sidebar";
 import { COOKIE_PANEL, usuarioDeSesion } from "@/lib/panel-auth";
 import { panelSoloLectura } from "@/lib/supabase/panel";
+import { SITIO } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Panel — Dakar Propiedades",
+  title: `Panel — ${SITIO.nombre}`,
   robots: { index: false, follow: false },
 };
 

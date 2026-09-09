@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { NAV_LINKS, SITIO, whatsappUrl } from "@/config/site";
-import { ClockIcon, PhoneIcon, PinIcon, WhatsappIcon } from "./icons";
+import { MARCA, NAV_LINKS, SITIO, mailtoUrl, whatsappUrl } from "@/config/site";
+import { ClockIcon, MailIcon, PhoneIcon, PinIcon, WhatsappIcon } from "./icons";
 
 export function SiteFooter() {
   return (
@@ -9,8 +9,10 @@ export function SiteFooter() {
         <div className="grid gap-12 lg:grid-cols-3">
           <div>
             <p className="flex items-baseline gap-1.5 text-[1.375rem] leading-none">
-              <span className="font-semibold tracking-tight">Dakar</span>
-              <span className="font-normal text-white/70">Propiedades</span>
+              <span className="font-semibold tracking-tight">{MARCA.principal}</span>
+              {MARCA.resto && (
+                <span className="font-normal text-white/70">{MARCA.resto}</span>
+              )}
             </p>
             <p className="mt-5 max-w-[34ch] text-lg text-white/75">
               Venta, alquiler, tasación y administración de propiedades.
@@ -41,9 +43,18 @@ export function SiteFooter() {
                 <PhoneIcon className="mt-0.5 size-5 shrink-0" />
                 <a
                   href={SITIO.telefonoHref}
-                  className="-my-2 inline-flex min-h-[44px] items-center py-2 hover:text-white"
+                  className="-my-2 inline-flex min-h-[44px] items-center py-2 transition-colors hover:text-white"
                 >
                   {SITIO.telefono}
+                </a>
+              </li>
+              <li className="flex gap-3">
+                <MailIcon className="mt-0.5 size-5 shrink-0" />
+                <a
+                  href={mailtoUrl(`Consulta — ${SITIO.nombre}`)}
+                  className="-my-2 inline-flex min-h-[44px] items-center break-all py-2 transition-colors hover:text-white"
+                >
+                  {SITIO.email}
                 </a>
               </li>
               <li className="flex gap-3">
@@ -73,6 +84,7 @@ export function SiteFooter() {
         <div className="mt-14 flex flex-wrap items-center justify-between gap-3 border-t border-white/20 pt-8">
           <p className="text-white/60">
             © {new Date().getFullYear()} {SITIO.nombre}
+            {SITIO.matricula && <> · Mat. {SITIO.matricula}</>}
           </p>
           <Link
             href="/admin"
@@ -80,8 +92,6 @@ export function SiteFooter() {
           >
             Acceso panel
           </Link>
-          {/* TODO: si Dakar tiene matrícula CUCICBA, va acá — es lo que muestra la
-              competencia de la zona y da confianza legal (brief §5). */}
         </div>
       </div>
     </footer>

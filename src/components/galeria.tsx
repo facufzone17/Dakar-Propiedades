@@ -31,16 +31,17 @@ export function Galeria({ fotos, alt }: { fotos: string[]; alt: string }) {
         <button
           type="button"
           onClick={() => setAmpliada(true)}
-          className="relative block aspect-4/3 w-full sm:aspect-16/9"
+          className="group relative block aspect-4/3 w-full overflow-hidden sm:aspect-16/9"
           aria-label="Ampliar foto"
         >
           <Image
+            key={activa}
             src={fotos[activa]}
             alt={`${alt} — foto ${activa + 1} de ${fotos.length}`}
             fill
             priority
             sizes="(max-width: 1024px) 100vw, 66vw"
-            className="object-cover"
+            className="object-cover animate-[fade_0.4s_ease] transition-transform duration-500 group-hover:scale-[1.02]"
           />
         </button>
       </div>

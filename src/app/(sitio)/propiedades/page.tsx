@@ -2,16 +2,18 @@ import Link from "next/link";
 import { FiltrosPropiedades } from "@/components/filtros-propiedades";
 import { PropiedadCard } from "@/components/propiedad-card";
 import { ArrowRightIcon } from "@/components/icons";
+import { Reveal } from "@/components/anim/reveal";
 import type { Filtros } from "@/data/propiedades";
 import { facetasPorOperacion, listarPropiedadesPublicas } from "@/lib/propiedades";
 import { obtenerTextos } from "@/lib/textos";
+import { SITIO } from "@/config/site";
 
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Propiedades en venta y alquiler — Dakar Propiedades",
+  title: `Propiedades en venta y alquiler — ${SITIO.nombre}`,
   description:
-    "Departamentos, PH, locales y galpones en venta y alquiler en CABA, GBA y San Luis.",
+    "Departamentos, PH, locales y galpones en venta y alquiler en CABA y GBA oeste.",
 };
 
 export default async function PropiedadesPage({
@@ -39,7 +41,7 @@ export default async function PropiedadesPage({
         {textos.propiedades_titulo}
       </h1>
       <p className="mt-4 max-w-[52ch] text-lg text-muted">
-        Toda la cartera de Dakar, en venta y alquiler.
+        Toda nuestra cartera, en venta y alquiler.
       </p>
 
       <h2 className="sr-only">Filtrar propiedades</h2>
@@ -56,8 +58,10 @@ export default async function PropiedadesPage({
       <h2 className="sr-only">Resultados</h2>
       {resultados.length > 0 ? (
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3">
-          {resultados.map((p) => (
-            <PropiedadCard key={p.id} propiedad={p} />
+          {resultados.map((p, i) => (
+            <Reveal key={p.id} delay={Math.min(i, 6) * 70} className="h-full">
+              <PropiedadCard propiedad={p} />
+            </Reveal>
           ))}
         </div>
       ) : (

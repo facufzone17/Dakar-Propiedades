@@ -1,14 +1,15 @@
 import { FormTasacion } from "@/components/form-tasacion";
-import { CheckIcon, WhatsappIcon } from "@/components/icons";
-import { SITIO, whatsappUrl } from "@/config/site";
+import { CheckIcon, MailIcon, WhatsappIcon } from "@/components/icons";
+import { Reveal } from "@/components/anim/reveal";
+import { SITIO, mailtoUrl, whatsappUrl } from "@/config/site";
 import { obtenerTextos } from "@/lib/textos";
 
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Tasá tu propiedad — Dakar Propiedades",
+  title: `Tasá tu propiedad — ${SITIO.nombre}`,
   description:
-    "Pedí la tasación de tu propiedad en Villa Devoto y alrededores. Te decimos cuánto vale y en cuánto se puede vender o alquilar hoy.",
+    "Pedí la tasación de tu propiedad en la zona oeste. Te decimos cuánto vale y en cuánto se puede vender o alquilar hoy.",
 };
 
 const PASOS = [
@@ -23,7 +24,7 @@ export default async function TasacionPage() {
   return (
     <div className="mx-auto max-w-[1400px] px-5 pb-20 pt-32 lg:px-10 lg:pb-28 lg:pt-40">
       <div className="grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
-        <div>
+        <Reveal>
           <h1 className="max-w-[14ch] text-h2 font-semibold tracking-[-0.02em] text-balance">
             {textos.tasacion_titulo}
           </h1>
@@ -48,21 +49,32 @@ export default async function TasacionPage() {
               <CheckIcon className="size-5" />
               ¿Preferís escribir directo?
             </p>
-            <a
-              href={whatsappUrl(
-                `Hola ${SITIO.nombre}, quería pedir una tasación de mi propiedad.`,
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex min-h-[56px] items-center gap-2.5 rounded-brand border border-line px-7 text-lg font-semibold transition-colors hover:bg-bg-subtle"
-            >
-              <WhatsappIcon className="size-5" />
-              Abrir WhatsApp
-            </a>
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+              <a
+                href={whatsappUrl(
+                  `Hola ${SITIO.nombre}, quería pedir una tasación de mi propiedad.`,
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="lift inline-flex min-h-[56px] items-center justify-center gap-2.5 rounded-brand border border-line px-7 text-lg font-semibold hover:bg-bg-subtle"
+              >
+                <WhatsappIcon className="size-5" />
+                WhatsApp
+              </a>
+              <a
+                href={mailtoUrl(`Pedido de tasación — ${SITIO.nombre}`)}
+                className="lift inline-flex min-h-[56px] items-center justify-center gap-2.5 rounded-brand border border-line px-7 text-lg font-semibold hover:bg-bg-subtle"
+              >
+                <MailIcon className="size-5" />
+                Mail
+              </a>
+            </div>
           </div>
-        </div>
+        </Reveal>
 
-        <FormTasacion />
+        <Reveal delay={120}>
+          <FormTasacion />
+        </Reveal>
       </div>
     </div>
   );

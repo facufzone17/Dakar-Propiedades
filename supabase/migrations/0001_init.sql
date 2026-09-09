@@ -1,5 +1,5 @@
 -- ============================================================================
--- Dakar Propiedades — schema inicial del panel de administración
+-- Inmobiliaria (template) — schema inicial del panel de administración
 -- Pegar y ejecutar en Supabase → SQL Editor (o vía CLI `supabase db push`).
 -- ============================================================================
 

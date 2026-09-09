@@ -1,5 +1,6 @@
 import Image from "next/image";
 import heroEdificios from "@/assets/hero-edificios.jpg";
+import { SITIO } from "@/config/site";
 import { obtenerTextos } from "@/lib/textos";
 import { HeroSearch } from "./hero-search";
 
@@ -22,7 +23,7 @@ export async function Hero() {
           sizes="100vw"
           quality={65}
           placeholder="blur"
-          className="object-cover object-bottom lg:object-center"
+          className="hero-kenburns object-cover object-bottom lg:object-center"
         />
 
         {/*
@@ -41,15 +42,21 @@ export async function Hero() {
           para que no se monte sobre el botón del buscador */}
       <div className="on-dark mx-auto flex w-full max-w-[1400px] flex-1 flex-col px-5 pb-24 pt-32 lg:px-10 lg:pb-10 lg:pt-40">
         <div className="flex-1">
-          <h1 className="max-w-[13ch] text-h1 font-semibold tracking-[-0.02em] text-balance text-white">
+          <h1 className="hero-rise max-w-[13ch] text-h1 font-semibold tracking-[-0.02em] text-balance text-white">
             {textos.home_hero_titulo}
           </h1>
-          <p className="mt-6 max-w-[38ch] text-lg font-medium text-white/90 lg:text-xl">
-            Inmobiliaria en Av. Francisco Beiró, Villa Devoto.
+          <p
+            className="hero-rise mt-6 max-w-[38ch] text-lg font-medium text-white/90 lg:text-xl"
+            style={{ ["--rise-delay" as string]: "120ms" }}
+          >
+            {SITIO.zonaFrase}. {SITIO.localidad}.
           </p>
         </div>
 
-        <div className="relative z-10 mt-12 max-w-[1080px] lg:mt-16">
+        <div
+          className="hero-rise relative z-10 mt-12 max-w-[1080px] lg:mt-16"
+          style={{ ["--rise-delay" as string]: "240ms" }}
+        >
           <HeroSearch />
         </div>
       </div>

@@ -1,13 +1,12 @@
-# Dakar Propiedades
+# Inmobiliaria — template
 
-Sitio institucional + catálogo para [Dakar Propiedades](https://www.argenprop.com/dakar-propiedades/inmuebles-anunciante-132149),
-inmobiliaria de Av. Francisco Beiró 4227, Villa Devoto, CABA.
+Sitio institucional + catálogo de propiedades para inmobiliarias de barrio (pensado
+para la zona oeste de CABA y GBA oeste). Es un **template genérico**: el contenido de
+demo — nombre, datos de contacto y las propiedades — son placeholders y se reemplazan
+por los del cliente sin tocar el diseño.
 
-La ley del proyecto está en [brief-dakar.md](brief-dakar.md); la investigación previa,
-en [investigacion-dakar.md](investigacion-dakar.md).
-
-> **Estado:** v1 para mostrar/pitchear. Todavía no hay acuerdo con Dakar, así que los
-> textos de marca son reemplazables y el sitio no usa dominio propio.
+> **Estado:** demo para mostrar/pitchear. Todo el branding sale de un solo archivo
+> (`src/config/site.ts`) o de variables de entorno.
 
 ## Correr el proyecto
 
@@ -21,62 +20,51 @@ Queda en http://localhost:3000. Para el build de producción: `npm run build && 
 ## Stack
 
 - **Next.js 15** (App Router) + TypeScript
-- **Tailwind CSS v4** — los tokens del brief §3 están en [`src/app/globals.css`](src/app/globals.css)
+- **Tailwind CSS v4** — design tokens en [`src/app/globals.css`](src/app/globals.css)
 - **Urbanist** vía `next/font` (self-hosted, sin request a Google en runtime)
-- Sin base de datos: los datos salen de [`src/data/propiedades.ts`](src/data/propiedades.ts)
+- **Supabase** (opcional) para el panel de administración y el catálogo dinámico.
+  Sin Supabase, el sitio funciona con el catálogo estático de
+  [`src/data/propiedades.ts`](src/data/propiedades.ts).
 
 ## Estructura
 
 ```
 src/
 ├── app/
-│   ├── page.tsx                 Home: hero + franja + destacadas + por qué + CTA
-│   ├── propiedades/page.tsx     Catálogo con filtros
-│   ├── propiedades/[id]/        Ficha: galería, specs, descripción, contacto
-│   ├── tasacion/                Formulario (conversión principal)
-│   ├── nosotros/ · contacto/
+│   ├── (sitio)/                 Sitio público
+│   │   ├── page.tsx             Home: hero + franja + destacadas + por qué + CTA
+│   │   ├── propiedades/         Catálogo con filtros + ficha individual
+│   │   ├── tasacion/            Formulario (conversión principal)
+│   │   └── nosotros/ · contacto/
+│   ├── admin/                   Panel: resumen, propiedades, títulos del sitio
 │   └── globals.css              Design tokens
 ├── components/                  Componentes de UI
-├── config/site.ts               Datos de contacto + número de WhatsApp
-└── data/propiedades.ts          Las 18 propiedades
+├── config/site.ts              Branding + datos de contacto + WhatsApp  ← rebranding acá
+└── data/propiedades.ts          Catálogo de demo (18 propiedades ficticias)
 ```
 
-## Los datos
+## Rebrandear para un cliente
 
-18 propiedades reales tomadas de la página de anunciante de Dakar en Argenprop, con sus
-fotos (98, en `public/propiedades/`), precios, metros y descripciones tal cual las
-escribieron ellos.
+Editar [`src/config/site.ts`](src/config/site.ts) (o cargar las variables
+`NEXT_PUBLIC_SITIO_*` y `NEXT_PUBLIC_WHATSAPP_NUMERO` en Vercel). Cambiar el ícono en
+[`src/app/icon.svg`](src/app/icon.svg). Cargar las propiedades reales por el panel
+(ver [PANEL-SETUP.md](PANEL-SETUP.md)) o editar `src/data/propiedades.ts`.
 
-**Son 18 y no 20**: Dakar tiene 20 avisos publicados, pero dos son republicaciones del
-mismo inmueble con otro barrio y el mismo precio — se confirmó porque comparten la carpeta
-de fotos en el servidor de Argenprop (Cabello 3900 como "Palermo"/"Palermo Chico", y
-La Pampa 700 como "Belgrano"/"Belgrano Chico").
+## Los datos de demo
 
-Las fotos están descargadas y recomprimidas a 1400px, no linkeadas al CDN de Argenprop,
-para que el sitio no dependa de ellos.
+18 propiedades **ficticias** con direcciones inventadas y descripciones genéricas.
+`Propiedad` (en `src/data/propiedades.ts`) tiene la misma forma que la tabla de
+Supabase: migrar es cambiar de dónde sale `PROPIEDADES`, nada más.
 
-`Propiedad` tiene la misma forma que la futura tabla de Supabase: migrar es cambiar de
-dónde sale `PROPIEDADES`, nada más.
+Las fotos de demo son de stock libre (Unsplash / Pexels, uso comercial sin atribución).
+Cada cliente las reemplaza por las propias.
 
 ## Cómo funciona el contacto
 
-No hay backend. El formulario de tasación y todos los botones de WhatsApp arman un mensaje
-con los datos cargados y abren el chat. Funciona de verdad, sin API keys.
-
-## Pendiente
-
-- [ ] **Número de WhatsApp real** — hoy hay un placeholder en [`src/config/site.ts`](src/config/site.ts);
-      hasta que se cambie, todos los CTA apuntan a un número inventado
-- [ ] **Años de trayectoria** en Villa Devoto (para la franja de confianza)
-- [ ] **Matrícula CUCICBA**, si la tienen (la competencia de la zona la muestra)
-- [ ] Fotos propias, si Dakar tiene mejores que las del portal
-- [ ] Revisar el copy de "Por qué Dakar" con ellos — es lectura del posicionamiento, no
-      palabras suyas
-- [ ] Correr `supabase/migrations/0002_textos_sitio.sql` en el proyecto de Supabase
-      (habilita la sección "Títulos del sitio" del panel; sin la tabla, el sitio
-      muestra los títulos por defecto y guardar falla)
+No hay backend. El formulario de tasación y los botones de WhatsApp arman un mensaje
+con los datos cargados y abren el chat. Funciona sin API keys.
 
 ## Chequeos
 
 Lighthouse mobile sobre el build de producción: accesibilidad, buenas prácticas y SEO en
-100 en las seis páginas; performance entre 93 y 99; CLS 0.
+100 en las seis páginas; performance 93–99; CLS 0.
