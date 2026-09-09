@@ -147,6 +147,37 @@
   animation: menu-in 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Máquina de escribir */
+.tw-rest {
+  opacity: 0;
+}
+.tw-caret {
+  display: inline-block;
+  width: 0.07em;
+  height: 1.05em;
+  margin-left: 0.04em;
+  vertical-align: -0.15em;
+  background: currentColor;
+  animation: tw-blink 0.9s step-end infinite;
+}
+@keyframes tw-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tw-rest {
+    opacity: 1;
+  }
+  .tw-caret {
+    display: none;
+  }
+}
+
 @keyframes fab-in {
   from {
     opacity: 0;

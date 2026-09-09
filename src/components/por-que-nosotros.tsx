@@ -6,11 +6,11 @@
  * candidatos a reemplazar cuando el cliente pase su propio mensaje. Los títulos
  * ya se editan desde el panel (/admin/textos); los párrafos viven acá.
  *
- * No hay testimonios: un template no puede traer reseñas reales de nadie y no se
- * inventan. Cada inmobiliaria suma las suyas cuando adopta el sitio.
+ * Entrada con efecto máquina de escribir: al hacer scroll a la sección, se
+ * teclean el título, los subtítulos y los párrafos, encadenados.
  */
 import { obtenerTextos } from "@/lib/textos";
-import { Reveal } from "./anim/reveal";
+import { Typewriter } from "./anim/typewriter";
 
 const MOTIVOS = [
   {
@@ -33,28 +33,47 @@ const MOTIVOS = [
   },
 ] as const;
 
+const VEL_TITULO = 26; // ms por caracter
+const VEL_PARRAFO = 11;
+
 export async function PorQueNosotros() {
   const textos = await obtenerTextos();
 
   return (
     <section className="bg-ink text-white">
       <div className="mx-auto max-w-[1400px] px-5 py-16 lg:px-10 lg:py-24">
-        <Reveal>
-          <h2 className="max-w-[14ch] text-h2 font-semibold tracking-[-0.02em] text-balance">
-            {textos.home_porque_titulo}
-          </h2>
-        </Reveal>
+        <Typewriter
+          as="h2"
+          text={textos.home_porque_titulo}
+          speed={VEL_TITULO}
+          className="block max-w-[14ch] text-h2 font-semibold tracking-[-0.02em] text-balance"
+        />
 
         <ol className="mt-10 grid gap-10 lg:mt-16 lg:grid-cols-3 lg:gap-12">
-          {MOTIVOS.map((m, i) => (
-            <Reveal as="li" key={m.n} delay={i * 110} className="border-t border-white/20 pt-6">
-              <span className="block text-lg font-semibold text-white/50">{m.n}</span>
-              <h3 className="mt-3 text-2xl font-semibold tracking-tight lg:text-3xl">
-                {textos[m.clave]}
-              </h3>
-              <p className="mt-3 text-lg leading-relaxed text-white/75">{m.texto}</p>
-            </Reveal>
-          ))}
+          {MOTIVOS.map((m, i) => {
+            const titulo = textos[m.clave];
+            const dTitulo = 120 + i * 220;
+            const dParrafo = dTitulo + titulo.length * VEL_TITULO + 180;
+            return (
+              <li key={m.n} className="border-t border-white/20 pt-6">
+                <span className="block text-lg font-semibold text-white/50">{m.n}</span>
+                <Typewriter
+                  as="h3"
+                  text={titulo}
+                  speed={VEL_TITULO}
+                  startDelay={dTitulo}
+                  className="mt-3 block text-2xl font-semibold tracking-tight lg:text-3xl"
+                />
+                <Typewriter
+                  as="p"
+                  text={m.texto}
+                  speed={VEL_PARRAFO}
+                  startDelay={dParrafo}
+                  className="mt-3 block text-lg leading-relaxed text-white/75"
+                />
+              </li>
+            );
+          })}
         </ol>
       </div>
     </section>

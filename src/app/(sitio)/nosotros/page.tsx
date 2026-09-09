@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRightIcon } from "@/components/icons";
 import { Reveal } from "@/components/anim/reveal";
+import { Typewriter } from "@/components/anim/typewriter";
 import { SITIO } from "@/config/site";
 import { PROPIEDADES } from "@/data/propiedades";
 import { obtenerTextos } from "@/lib/textos";
@@ -49,17 +50,28 @@ export default async function NosotrosPage() {
           </p>
         </Reveal>
 
-        <Reveal delay={120} className="rounded-brand bg-bg-subtle p-7 lg:p-9">
-          <h2 className="text-2xl font-semibold tracking-tight">{textos.nosotros_que_hacemos}</h2>
+        <div className="rounded-brand bg-bg-subtle p-7 lg:p-9">
+          <Typewriter
+            as="h2"
+            text={textos.nosotros_que_hacemos}
+            speed={26}
+            className="block text-2xl font-semibold tracking-tight"
+          />
           <ul className="mt-6 divide-y divide-line">
             {[
               ["Venta", "Publicamos, mostramos y cerramos la operación."],
               ["Alquiler", "Desde la búsqueda de inquilino hasta la firma."],
               ["Tasación", "Un precio realista, con lo que se opera hoy en la zona."],
               ["Administración", "Gestión de propiedades alquiladas para terceros."],
-            ].map(([titulo, texto]) => (
+            ].map(([titulo, texto], i) => (
               <li key={titulo} className="py-5 first:pt-0 last:pb-0">
-                <h3 className="text-xl font-semibold tracking-tight">{titulo}</h3>
+                <Typewriter
+                  as="h3"
+                  text={titulo}
+                  speed={26}
+                  startDelay={260 + i * 190}
+                  className="block text-xl font-semibold tracking-tight"
+                />
                 <p className="mt-1 text-lg text-muted">{texto}</p>
               </li>
             ))}
@@ -72,7 +84,7 @@ export default async function NosotrosPage() {
             Pedir tasación
             <ArrowRightIcon className="nudge size-[18px]" />
           </Link>
-        </Reveal>
+        </div>
       </div>
     </div>
   );
