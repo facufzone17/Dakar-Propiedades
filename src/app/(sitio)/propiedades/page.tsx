@@ -5,13 +5,14 @@ import { ArrowRightIcon } from "@/components/icons";
 import type { Filtros } from "@/data/propiedades";
 import { facetasPorOperacion, listarPropiedadesPublicas } from "@/lib/propiedades";
 import { obtenerTextos } from "@/lib/textos";
+import { SITIO } from "@/config/site";
 
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Propiedades en venta y alquiler — Dakar Propiedades",
+  title: `Propiedades en venta y alquiler — ${SITIO.nombre}`,
   description:
-    "Departamentos, PH, locales y galpones en venta y alquiler en CABA, GBA y San Luis.",
+    "Departamentos, PH, locales y galpones en venta y alquiler en CABA y GBA oeste.",
 };
 
 export default async function PropiedadesPage({
@@ -39,7 +40,7 @@ export default async function PropiedadesPage({
         {textos.propiedades_titulo}
       </h1>
       <p className="mt-4 max-w-[52ch] text-lg text-muted">
-        Toda la cartera de Dakar, en venta y alquiler.
+        Toda nuestra cartera, en venta y alquiler.
       </p>
 
       <h2 className="sr-only">Filtrar propiedades</h2>

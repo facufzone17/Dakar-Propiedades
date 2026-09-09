@@ -5,8 +5,8 @@ import { obtenerTextos } from "@/lib/textos";
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Contacto — Dakar Propiedades",
-  description: `Av. Francisco Beiró 4227, Villa Devoto, CABA. Teléfono ${SITIO.telefono}. Horario: ${SITIO.horario}.`,
+  title: `Contacto — ${SITIO.nombre}`,
+  description: `${SITIO.direccion}, ${SITIO.localidad}. Teléfono ${SITIO.telefono}. Horario: ${SITIO.horario}.`,
 };
 
 const DIRECCION_COMPLETA = `${SITIO.direccion}, ${SITIO.localidad}`;

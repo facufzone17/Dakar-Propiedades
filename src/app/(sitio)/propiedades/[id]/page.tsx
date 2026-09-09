@@ -26,9 +26,9 @@ export async function generateMetadata({
 }) {
   const { id } = await params;
   const p = await propiedadPublicaPorId(id);
-  if (!p) return { title: "Propiedad no encontrada — Dakar Propiedades" };
+  if (!p) return { title: `Propiedad no encontrada — ${SITIO.nombre}` };
   return {
-    title: `${tituloDe(p)} — ${formatearPrecio(p)} — Dakar Propiedades`,
+    title: `${tituloDe(p)} — ${formatearPrecio(p)} — ${SITIO.nombre}`,
     description: p.descripcion.slice(0, 155),
   };
 }
@@ -107,7 +107,6 @@ export default async function FichaPropiedad({
           </dl>
 
           <h2 className="mt-12 text-2xl font-semibold tracking-tight">Descripción</h2>
-          {/* Texto tal cual lo publicó Dakar */}
           <p className="mt-4 max-w-[68ch] text-lg leading-relaxed text-muted">
             {p.descripcion}
           </p>

@@ -9,9 +9,8 @@ import { ArrowRightIcon, ChevronDownIcon, WhatsappIcon } from "./icons";
  * El formulario arma un mensaje de WhatsApp con los datos cargados y abre el chat.
  *
  * Por qué así y no un POST a un backend: funciona de verdad hoy, sin servicio de
- * mail ni API key, y deja la consulta en el canal que el brief §1 define como
- * principal. Cuando haya acuerdo con Dakar se puede cambiar por un envío a
- * Supabase o a un mail sin tocar el resto del sitio.
+ * mail ni API key, y deja la consulta en WhatsApp, el canal principal. Se puede
+ * cambiar por un envío a Supabase o a un mail sin tocar el resto del sitio.
  */
 
 const TIPOS = ["Departamento", "Casa", "PH", "Local", "Galpón", "Terreno", "Otro"];
@@ -58,7 +57,7 @@ export function FormTasacion() {
         <Select id="t-operacion" label="Querés" value={datos.operacion} onChange={set("operacion")} opciones={OPERACIONES} vacio="Elegí una opción" requerido />
 
         <div className="sm:col-span-2">
-          <Texto id="t-direccion" label="Dirección o barrio" value={datos.direccion} onChange={set("direccion")} requerido placeholder="Ej: Av. Francisco Beiró 4200, Villa Devoto" />
+          <Texto id="t-direccion" label="Dirección o barrio" value={datos.direccion} onChange={set("direccion")} requerido placeholder="Ej: Av. Rivadavia 15000, Ramos Mejía" />
         </div>
 
         <div className="sm:col-span-2">

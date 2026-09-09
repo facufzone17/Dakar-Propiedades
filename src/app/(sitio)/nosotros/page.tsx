@@ -7,18 +7,15 @@ import { obtenerTextos } from "@/lib/textos";
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Nosotros — Dakar Propiedades",
+  title: `Nosotros — ${SITIO.nombre}`,
   description:
-    "Inmobiliaria en Av. Francisco Beiró 4227, Villa Devoto. Venta, alquiler, tasación y administración de propiedades.",
+    "Inmobiliaria de la zona oeste. Venta, alquiler, tasación y administración de propiedades.",
 };
 
 /**
- * Sin página de "equipo" ni bios: Dakar no muestra agentes individuales hoy y no
- * se inventan personas (brief §4). Texto simple y fácil de reemplazar cuando
- * ellos pasen el suyo.
- *
- * TODO: falta el año en que abrieron. Cuando lo confirmen, entra en el primer
- * párrafo, que hoy evita a propósito hablar de trayectoria en años.
+ * Sin página de "equipo" ni bios: no se inventan personas. Texto simple y fácil
+ * de reemplazar cuando el cliente pase el suyo. El primer párrafo evita a
+ * propósito hablar de trayectoria en años (dato propio de cada inmobiliaria).
  */
 export default async function NosotrosPage() {
   const textos = await obtenerTextos();
@@ -35,14 +32,14 @@ export default async function NosotrosPage() {
       <div className="mt-8 grid gap-12 lg:grid-cols-2 lg:gap-16">
         <div className="max-w-[60ch] space-y-5 text-lg leading-relaxed text-muted">
           <p>
-            Dakar Propiedades trabaja desde {SITIO.direccion}, en {SITIO.localidad}. Es
-            una inmobiliaria de barrio: se atiende en el mostrador de siempre, y la
-            operación se define con quien toma las decisiones.
+            {SITIO.nombre} trabaja desde {SITIO.direccion}, en {SITIO.localidad}. Es una
+            inmobiliaria de barrio: se atiende en el mostrador de siempre, y la operación
+            se define con quien toma las decisiones.
           </p>
           <p>
             Hacemos venta, alquiler, tasación y administración de propiedades. La cartera
-            está repartida en {barriosCaba} barrios de la Capital, más Gran Buenos Aires
-            y San Luis — no solo Devoto, aunque la oficina esté acá.
+            está repartida en {barriosCaba} barrios de la Capital, más Gran Buenos Aires —
+            no solo la zona de la oficina.
           </p>
           <p>
             La forma más rápida de contactarnos es WhatsApp. Escribinos y te

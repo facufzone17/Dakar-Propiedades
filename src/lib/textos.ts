@@ -54,8 +54,8 @@ export const TEXTOS_SITIO = [
       },
       {
         clave: "home_porque_titulo",
-        label: "Sección “Por qué Dakar”",
-        porDefecto: "Por qué Dakar",
+        label: "Sección “Por qué elegirnos”",
+        porDefecto: "Por qué elegirnos",
       },
       {
         clave: "home_porque_1",

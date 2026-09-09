@@ -3,8 +3,8 @@
  *
  * `supabaseConfigurado` deja al sitio funcionar sin base: mientras no estén las
  * variables de entorno, el catálogo público cae al array de `@/data/propiedades`
- * y el panel muestra un aviso. Cuando Dakar (o nosotros) carga las claves del
- * proyecto, todo pasa a leer/escribir en Supabase sin tocar código.
+ * y el panel muestra un aviso. Cuando se cargan las claves del proyecto, todo
+ * pasa a leer/escribir en Supabase sin tocar código.
  */
 const URL_ENV = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 export const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";

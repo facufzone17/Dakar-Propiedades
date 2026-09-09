@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cerrarSesion } from "@/app/admin/actions";
+import { MARCA } from "@/config/site";
 import { IconPropiedades, IconResumen, IconSalir, IconTextos } from "./icons";
 
 const LINKS = [
@@ -17,7 +18,7 @@ export function AdminSidebar({ email }: { email: string }) {
   return (
     <aside className="sticky top-6 hidden h-[calc(100vh-3rem)] w-60 shrink-0 flex-col rounded-2xl border border-black/[0.04] bg-white p-4 shadow-[0_1px_2px_rgba(23,23,23,0.04),0_12px_32px_-16px_rgba(23,23,23,0.18)] lg:flex">
       <Link href="/admin" className="flex items-baseline gap-1.5 px-2 py-1.5">
-        <span className="text-lg font-semibold tracking-tight">Dakar</span>
+        <span className="text-lg font-semibold tracking-tight">{MARCA.principal}</span>
         <span className="text-sm text-muted">Panel</span>
       </Link>
 

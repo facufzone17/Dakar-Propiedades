@@ -6,9 +6,9 @@ import { obtenerTextos } from "@/lib/textos";
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Tasá tu propiedad — Dakar Propiedades",
+  title: `Tasá tu propiedad — ${SITIO.nombre}`,
   description:
-    "Pedí la tasación de tu propiedad en Villa Devoto y alrededores. Te decimos cuánto vale y en cuánto se puede vender o alquilar hoy.",
+    "Pedí la tasación de tu propiedad en la zona oeste. Te decimos cuánto vale y en cuánto se puede vender o alquilar hoy.",
 };
 
 const PASOS = [

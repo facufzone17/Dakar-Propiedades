@@ -11,7 +11,7 @@ const urbanist = Urbanist({
 });
 
 export const metadata: Metadata = {
-  title: `${SITIO.nombre} — Inmobiliaria en Villa Devoto`,
+  title: `${SITIO.nombre} — ${SITIO.zonaFrase}`,
   description: `Venta, alquiler, tasación y administración de propiedades. ${SITIO.direccion}, ${SITIO.localidad}.`,
 };
 

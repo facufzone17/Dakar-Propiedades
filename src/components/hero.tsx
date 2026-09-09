@@ -1,5 +1,6 @@
 import Image from "next/image";
 import heroEdificios from "@/assets/hero-edificios.jpg";
+import { SITIO } from "@/config/site";
 import { obtenerTextos } from "@/lib/textos";
 import { HeroSearch } from "./hero-search";
 
@@ -45,7 +46,7 @@ export async function Hero() {
             {textos.home_hero_titulo}
           </h1>
           <p className="mt-6 max-w-[38ch] text-lg font-medium text-white/90 lg:text-xl">
-            Inmobiliaria en Av. Francisco Beiró, Villa Devoto.
+            {SITIO.zonaFrase}. {SITIO.localidad}.
           </p>
         </div>
 

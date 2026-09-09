@@ -1,5 +1,5 @@
 -- ============================================================================
--- Dakar Propiedades — el tipo de propiedad pasa a ser texto libre
+-- Inmobiliaria (template) — el tipo de propiedad pasa a ser texto libre
 -- Pegar y ejecutar en Supabase → SQL Editor, después de 0001_init.sql.
 -- ============================================================================
 --

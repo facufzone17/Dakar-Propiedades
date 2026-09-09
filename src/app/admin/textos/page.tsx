@@ -3,10 +3,11 @@ import { Card } from "@/components/admin/ui";
 import { supabaseConfigurado } from "@/lib/supabase/config";
 import { panelSoloLectura } from "@/lib/supabase/panel";
 import { MAX_LARGO_TITULO, TEXTOS_SITIO, obtenerTextos } from "@/lib/textos";
+import { SITIO } from "@/config/site";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Títulos del sitio — Panel Dakar" };
+export const metadata = { title: `Títulos del sitio — Panel ${SITIO.nombre}` };
 
 export default async function TextosPage() {
   if (!supabaseConfigurado) {

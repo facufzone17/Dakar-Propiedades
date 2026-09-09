@@ -2,7 +2,7 @@ import { CtaTasacion } from "@/components/cta-tasacion";
 import { Destacadas } from "@/components/destacadas";
 import { FranjaConfianza } from "@/components/franja-confianza";
 import { Hero } from "@/components/hero";
-import { PorQueDakar } from "@/components/por-que-dakar";
+import { PorQueNosotros } from "@/components/por-que-nosotros";
 
 export const revalidate = 60;
 
@@ -12,7 +12,7 @@ export default function Home() {
       <Hero />
       <FranjaConfianza />
       <Destacadas />
-      <PorQueDakar />
+      <PorQueNosotros />
       <CtaTasacion />
     </>
   );

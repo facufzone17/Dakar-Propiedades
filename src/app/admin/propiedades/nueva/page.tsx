@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { PropiedadForm } from "@/components/admin/propiedad-form";
+import { SITIO } from "@/config/site";
 
-export const metadata = { title: "Nueva propiedad — Panel Dakar" };
+export const metadata = { title: `Nueva propiedad — Panel ${SITIO.nombre}` };
 
 export default function NuevaPropiedadPage() {
   return (

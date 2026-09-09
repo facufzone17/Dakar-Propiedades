@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { NAV_LINKS, SITIO, whatsappUrl } from "@/config/site";
+import { MARCA, NAV_LINKS, SITIO, whatsappUrl } from "@/config/site";
 import { ArrowRightIcon, CloseIcon, MenuIcon, WhatsappIcon } from "./icons";
 
 const MENSAJE_WA = `Hola ${SITIO.nombre}, quería hacerles una consulta.`;
@@ -34,8 +34,8 @@ export function SiteHeader() {
           href="/"
           className="-my-2 flex min-h-[44px] items-center gap-1.5 rounded-brand py-2 text-[1.3125rem] leading-none"
         >
-          <span className="font-semibold tracking-tight">Dakar</span>
-          <span className="font-normal text-white/70">Propiedades</span>
+          <span className="font-semibold tracking-tight">{MARCA.principal}</span>
+          {MARCA.resto && <span className="font-normal text-white/70">{MARCA.resto}</span>}
         </Link>
 
         <nav aria-label="Principal" className="hidden lg:block">
