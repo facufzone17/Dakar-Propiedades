@@ -51,7 +51,9 @@ export async function obtenerMetricas(): Promise<Metricas> {
 
   const filas = (props ?? []) as FilaMin[];
   const evs = (eventos ?? []) as Evento[];
-  const consultaEvs = evs.filter((e) => e.tipo === "whatsapp" || e.tipo === "llamada");
+  const consultaEvs = evs.filter(
+    (e) => e.tipo === "whatsapp" || e.tipo === "llamada" || e.tipo === "email",
+  );
 
   const activas = filas.filter((f) => f.estado === "activa");
   const titulo = (f: FilaMin) => {

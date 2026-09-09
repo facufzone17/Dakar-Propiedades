@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SITIO, whatsappUrl } from "@/config/site";
 import { obtenerTextos } from "@/lib/textos";
 import { ArrowRightIcon, WhatsappIcon } from "./icons";
+import { Reveal } from "./anim/reveal";
 
 /** CTA final de la home. Es la conversión principal del sitio (brief §1). */
 export async function CtaTasacion() {
@@ -10,7 +11,7 @@ export async function CtaTasacion() {
   return (
     <section className="bg-bg">
       <div className="mx-auto max-w-[1400px] px-5 py-16 lg:px-10 lg:py-24">
-        <div className="rounded-brand bg-bg-subtle px-6 py-14 lg:px-16 lg:py-20">
+        <Reveal className="rounded-brand bg-bg-subtle px-6 py-14 lg:px-16 lg:py-20">
           <h2 className="max-w-[18ch] text-h2 font-semibold tracking-[-0.02em] text-balance">
             {textos.home_cta_titulo}
           </h2>
@@ -22,10 +23,10 @@ export async function CtaTasacion() {
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
             <Link
               href="/tasacion"
-              className="inline-flex min-h-[56px] items-center justify-center gap-2.5 rounded-brand bg-ink px-8 text-lg font-semibold text-white transition-opacity hover:opacity-90"
+              className="lift group inline-flex min-h-[56px] items-center justify-center gap-2.5 rounded-brand bg-ink px-8 text-lg font-semibold text-white hover:opacity-95"
             >
               Pedir tasación
-              <ArrowRightIcon className="size-[18px]" />
+              <ArrowRightIcon className="nudge size-[18px]" />
             </Link>
             <a
               href={whatsappUrl(
@@ -33,13 +34,13 @@ export async function CtaTasacion() {
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[56px] items-center justify-center gap-2.5 rounded-brand border border-line px-8 text-lg font-semibold transition-colors hover:bg-bg"
+              className="lift inline-flex min-h-[56px] items-center justify-center gap-2.5 rounded-brand border border-line px-8 text-lg font-semibold hover:bg-bg"
             >
               <WhatsappIcon className="size-5" />
               Escribinos por WhatsApp
             </a>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRightIcon } from "@/components/icons";
+import { Reveal } from "@/components/anim/reveal";
 import { SITIO } from "@/config/site";
 import { PROPIEDADES } from "@/data/propiedades";
 import { obtenerTextos } from "@/lib/textos";
@@ -30,7 +31,7 @@ export default async function NosotrosPage() {
       </h1>
 
       <div className="mt-8 grid gap-12 lg:grid-cols-2 lg:gap-16">
-        <div className="max-w-[60ch] space-y-5 text-lg leading-relaxed text-muted">
+        <Reveal className="max-w-[60ch] space-y-5 text-lg leading-relaxed text-muted">
           <p>
             {SITIO.nombre} trabaja desde {SITIO.direccion}, en {SITIO.localidad}. Es una
             inmobiliaria de barrio: se atiende en el mostrador de siempre, y la operación
@@ -42,13 +43,13 @@ export default async function NosotrosPage() {
             no solo la zona de la oficina.
           </p>
           <p>
-            La forma más rápida de contactarnos es WhatsApp. Escribinos y te
+            La forma más rápida de contactarnos es WhatsApp o mail. Escribinos y te
             respondemos con lo que necesites saber de cualquier propiedad de la cartera,
             o para coordinar una tasación.
           </p>
-        </div>
+        </Reveal>
 
-        <div className="rounded-brand bg-bg-subtle p-7 lg:p-9">
+        <Reveal delay={120} className="rounded-brand bg-bg-subtle p-7 lg:p-9">
           <h2 className="text-2xl font-semibold tracking-tight">{textos.nosotros_que_hacemos}</h2>
           <ul className="mt-6 divide-y divide-line">
             {[
@@ -66,12 +67,12 @@ export default async function NosotrosPage() {
 
           <Link
             href="/tasacion"
-            className="mt-8 inline-flex min-h-[56px] items-center gap-2.5 rounded-brand bg-ink px-8 text-lg font-semibold text-white transition-opacity hover:opacity-90"
+            className="lift group mt-8 inline-flex min-h-[56px] items-center gap-2.5 rounded-brand bg-ink px-8 text-lg font-semibold text-white hover:opacity-95"
           >
             Pedir tasación
-            <ArrowRightIcon className="size-[18px]" />
+            <ArrowRightIcon className="nudge size-[18px]" />
           </Link>
-        </div>
+        </Reveal>
       </div>
     </div>
   );

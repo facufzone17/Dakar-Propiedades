@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { supabaseConfigurado } from "@/lib/supabase/config";
 import { crearClientePublico } from "@/lib/supabase/publico";
 
-const TIPOS = new Set(["whatsapp", "llamada", "tasacion"]);
+const TIPOS = new Set(["whatsapp", "llamada", "email", "tasacion"]);
 
 /**
  * Registra una consulta (click en WhatsApp / Llamar / envío de tasación).

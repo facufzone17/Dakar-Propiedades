@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { MARCA, NAV_LINKS, SITIO, whatsappUrl } from "@/config/site";
-import { ClockIcon, PhoneIcon, PinIcon, WhatsappIcon } from "./icons";
+import { MARCA, NAV_LINKS, SITIO, mailtoUrl, whatsappUrl } from "@/config/site";
+import { ClockIcon, MailIcon, PhoneIcon, PinIcon, WhatsappIcon } from "./icons";
 
 export function SiteFooter() {
   return (
@@ -43,9 +43,18 @@ export function SiteFooter() {
                 <PhoneIcon className="mt-0.5 size-5 shrink-0" />
                 <a
                   href={SITIO.telefonoHref}
-                  className="-my-2 inline-flex min-h-[44px] items-center py-2 hover:text-white"
+                  className="-my-2 inline-flex min-h-[44px] items-center py-2 transition-colors hover:text-white"
                 >
                   {SITIO.telefono}
+                </a>
+              </li>
+              <li className="flex gap-3">
+                <MailIcon className="mt-0.5 size-5 shrink-0" />
+                <a
+                  href={mailtoUrl(`Consulta — ${SITIO.nombre}`)}
+                  className="-my-2 inline-flex min-h-[44px] items-center break-all py-2 transition-colors hover:text-white"
+                >
+                  {SITIO.email}
                 </a>
               </li>
               <li className="flex gap-3">

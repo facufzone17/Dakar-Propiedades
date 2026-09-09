@@ -10,6 +10,7 @@
  * inventan. Cada inmobiliaria suma las suyas cuando adopta el sitio.
  */
 import { obtenerTextos } from "@/lib/textos";
+import { Reveal } from "./anim/reveal";
 
 const MOTIVOS = [
   {
@@ -38,19 +39,21 @@ export async function PorQueNosotros() {
   return (
     <section className="bg-ink text-white">
       <div className="mx-auto max-w-[1400px] px-5 py-16 lg:px-10 lg:py-24">
-        <h2 className="max-w-[14ch] text-h2 font-semibold tracking-[-0.02em] text-balance">
-          {textos.home_porque_titulo}
-        </h2>
+        <Reveal>
+          <h2 className="max-w-[14ch] text-h2 font-semibold tracking-[-0.02em] text-balance">
+            {textos.home_porque_titulo}
+          </h2>
+        </Reveal>
 
         <ol className="mt-10 grid gap-10 lg:mt-16 lg:grid-cols-3 lg:gap-12">
-          {MOTIVOS.map((m) => (
-            <li key={m.n} className="border-t border-white/20 pt-6">
+          {MOTIVOS.map((m, i) => (
+            <Reveal as="li" key={m.n} delay={i * 110} className="border-t border-white/20 pt-6">
               <span className="block text-lg font-semibold text-white/50">{m.n}</span>
               <h3 className="mt-3 text-2xl font-semibold tracking-tight lg:text-3xl">
                 {textos[m.clave]}
               </h3>
               <p className="mt-3 text-lg leading-relaxed text-white/75">{m.texto}</p>
-            </li>
+            </Reveal>
           ))}
         </ol>
       </div>

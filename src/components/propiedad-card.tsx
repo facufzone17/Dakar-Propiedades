@@ -24,7 +24,7 @@ export function PropiedadCard({
   ].filter(Boolean) as { Icono: typeof BedIcon; valor: string; label: string }[];
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-brand bg-bg-subtle transition-shadow hover:shadow-[0_8px_30px_rgba(23,23,23,0.10)]">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-brand bg-bg-subtle transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:shadow-[0_18px_40px_-16px_rgba(23,23,23,0.22)]">
       <div className="relative aspect-4/3 overflow-hidden">
         <Image
           src={p.fotos[0]}
@@ -32,7 +32,7 @@ export function PropiedadCard({
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority={prioridad}
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
         />
         <span className="absolute left-3 top-3 rounded-brand bg-bg px-3 py-1.5 text-sm font-semibold">
           {p.tipo}

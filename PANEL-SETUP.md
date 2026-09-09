@@ -17,7 +17,8 @@ Supabase → **SQL Editor** → New query → pegar y correr, en orden:
 1. `supabase/migrations/0001_init.sql` (tablas, RLS, bucket de Storage)
 2. `supabase/migrations/0002_textos_sitio.sql` (títulos editables del sitio)
 3. `supabase/migrations/0003_tipo_propiedad_libre.sql` (tipo de propiedad de texto libre)
-4. `supabase/seed.sql` (opcional: las 18 propiedades de demo)
+4. `supabase/migrations/0004_evento_email.sql` (consultas por mail en las métricas)
+5. `supabase/seed.sql` (opcional: las 18 propiedades de demo)
 
 ## 3. Acceso al panel
 

@@ -1,4 +1,4 @@
-export type TipoConsulta = "whatsapp" | "llamada" | "tasacion";
+export type TipoConsulta = "whatsapp" | "llamada" | "email" | "tasacion";
 
 /**
  * Registra una consulta sin bloquear la navegación. Usa `sendBeacon` si está

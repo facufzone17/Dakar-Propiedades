@@ -86,10 +86,10 @@ export function HeroSearch() {
                 </p>
                 <Link
                   href="/tasacion"
-                  className="inline-flex min-h-[56px] shrink-0 items-center justify-center gap-2.5 rounded-brand bg-ink px-8 text-lg font-semibold text-white transition-opacity hover:opacity-90"
+                  className="lift group inline-flex min-h-[56px] shrink-0 items-center justify-center gap-2.5 rounded-brand bg-ink px-8 text-lg font-semibold text-white hover:opacity-95"
                 >
                   Pedir tasación
-                  <ArrowRightIcon className="size-[18px]" />
+                  <ArrowRightIcon className="nudge size-[18px]" />
                 </Link>
               </div>
             </div>
@@ -153,10 +153,10 @@ function PanelBusqueda({ tabId, operacion }: { tabId: TabId; operacion: Operacio
 
         <button
           type="submit"
-          className="inline-flex min-h-[56px] shrink-0 items-center justify-center gap-2.5 rounded-brand bg-ink px-8 text-lg font-semibold text-white transition-opacity hover:opacity-90"
+          className="lift group inline-flex min-h-[56px] shrink-0 items-center justify-center gap-2.5 rounded-brand bg-ink px-8 text-lg font-semibold text-white hover:opacity-95"
         >
           Ver propiedades
-          <ArrowRightIcon className="size-[18px]" />
+          <ArrowRightIcon className="nudge size-[18px]" />
         </button>
       </form>
     </div>

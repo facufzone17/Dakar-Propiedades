@@ -13,7 +13,8 @@ import {
 } from "@/components/icons";
 import { PropiedadCard } from "@/components/propiedad-card";
 import { PropiedadCta } from "@/components/propiedad-cta";
-import { SITIO, whatsappUrl } from "@/config/site";
+import { Reveal } from "@/components/anim/reveal";
+import { SITIO, mailtoUrl, whatsappUrl } from "@/config/site";
 import { formatearExpensas, formatearPrecio, tituloDe } from "@/data/propiedades";
 import { propiedadPublicaPorId, similaresA } from "@/lib/propiedades";
 
@@ -57,7 +58,8 @@ export default async function FichaPropiedad({
     p.antiguedad ? { Icono: ClockIcon, valor: `${p.antiguedad} ${p.antiguedad === 1 ? "año" : "años"}`, label: "Antigüedad" } : null,
   ].filter(Boolean) as { Icono: typeof BedIcon; valor: string; label: string }[];
 
-  const mensajeWa = `Hola ${SITIO.nombre}, me interesa la propiedad de ${p.direccion}, ${p.barrio} (${formatearPrecio(p)}). ¿Sigue disponible?`;
+  const mensajeContacto = `Hola ${SITIO.nombre}, me interesa la propiedad de ${p.direccion}, ${p.barrio} (${formatearPrecio(p)}). ¿Sigue disponible?`;
+  const asuntoMail = `Consulta: ${titulo} — ${p.direccion}`;
 
   const similares = await similaresA(p, 3);
 
@@ -133,7 +135,7 @@ export default async function FichaPropiedad({
             href={mapaUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-5 inline-flex min-h-[56px] items-center gap-2.5 rounded-brand border border-line px-7 text-lg font-semibold transition-colors hover:bg-bg-subtle"
+            className="lift mt-5 inline-flex min-h-[56px] items-center gap-2.5 rounded-brand border border-line px-7 text-lg font-semibold hover:bg-bg-subtle"
           >
             <PinIcon className="size-5" />
             Ver en Google Maps
@@ -150,9 +152,10 @@ export default async function FichaPropiedad({
 
             <PropiedadCta
               propiedadId={p.id}
-              whatsappHref={whatsappUrl(mensajeWa)}
+              whatsappHref={whatsappUrl(mensajeContacto)}
               telefono={SITIO.telefono}
               telefonoHref={SITIO.telefonoHref}
+              mailHref={mailtoUrl(asuntoMail, mensajeContacto)}
             />
 
             <p className="mt-6 border-t border-line pt-5 text-[15px] text-muted">
@@ -182,8 +185,10 @@ export default async function FichaPropiedad({
         <section className="mt-20 border-t border-line pt-14">
           <h2 className="text-h2 font-semibold tracking-[-0.02em]">Similares</h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {similares.map((s) => (
-              <PropiedadCard key={s.id} propiedad={s} />
+            {similares.map((s, i) => (
+              <Reveal key={s.id} delay={i * 80} className="h-full">
+                <PropiedadCard propiedad={s} />
+              </Reveal>
             ))}
           </div>
         </section>

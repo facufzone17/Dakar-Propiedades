@@ -9,6 +9,7 @@ const MENSAJE_WA = `Hola ${SITIO.nombre}, quería hacerles una consulta.`;
 
 export function SiteHeader() {
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [scrolleado, setScrolleado] = useState(false);
 
   // Con el menú abierto: bloquear el scroll del fondo y cerrar con Escape
   useEffect(() => {
@@ -24,12 +25,28 @@ export function SiteHeader() {
     };
   }, [menuAbierto]);
 
+  // Sombra sutil cuando se despega del tope
+  useEffect(() => {
+    const onScroll = () => setScrolleado(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     // Siempre sólido: transparente arriba de todo solo funciona en la home,
     // donde la foto del hero tiene un scrim oscuro. En el resto de las páginas
     // (fondo blanco) el header quedaba invisible hasta scrollear.
-    <header className="on-dark fixed inset-x-0 top-0 z-50 bg-ink text-white">
-      <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between gap-6 px-5 lg:px-10">
+    <header
+      className={`on-dark fixed inset-x-0 top-0 z-50 bg-ink text-white transition-shadow duration-300 ${
+        scrolleado ? "shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)]" : ""
+      }`}
+    >
+      <div
+        className={`mx-auto flex max-w-[1400px] items-center justify-between gap-6 px-5 transition-[height] duration-300 lg:px-10 ${
+          scrolleado ? "h-[4.25rem]" : "h-20"
+        }`}
+      >
         <Link
           href="/"
           className="-my-2 flex min-h-[44px] items-center gap-1.5 rounded-brand py-2 text-[1.3125rem] leading-none"
@@ -44,7 +61,7 @@ export function SiteHeader() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="rounded-brand text-lg font-medium text-white/85 transition-colors hover:text-white"
+                  className="nav-link rounded-brand text-lg font-medium text-white/85 transition-colors hover:text-white"
                 >
                   {link.label}
                 </Link>
@@ -57,11 +74,11 @@ export function SiteHeader() {
           href={whatsappUrl(MENSAJE_WA)}
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden items-center gap-2.5 rounded-brand bg-white px-6 py-3.5 text-lg font-semibold text-ink transition-opacity hover:opacity-85 lg:inline-flex"
+          className="lift group hidden items-center gap-2.5 rounded-brand bg-white px-6 py-3.5 text-lg font-semibold text-ink hover:opacity-90 lg:inline-flex"
         >
           <WhatsappIcon className="size-5" />
           WhatsApp
-          <ArrowRightIcon className="size-[18px]" />
+          <ArrowRightIcon className="nudge size-[18px]" />
         </a>
 
         <button
@@ -77,7 +94,7 @@ export function SiteHeader() {
       </div>
 
       {menuAbierto && (
-        <div id="menu-mobile" className="bg-ink lg:hidden">
+        <div id="menu-mobile" className="menu-in bg-ink lg:hidden">
           <nav aria-label="Principal" className="px-5 pb-8">
             <ul className="flex flex-col border-t border-white/15">
               {NAV_LINKS.map((link) => (
@@ -97,7 +114,7 @@ export function SiteHeader() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMenuAbierto(false)}
-              className="mt-6 flex min-h-[56px] items-center justify-center gap-2.5 rounded-brand bg-white px-6 text-lg font-semibold text-ink"
+              className="lift mt-6 flex min-h-[56px] items-center justify-center gap-2.5 rounded-brand bg-white px-6 text-lg font-semibold text-ink"
             >
               <WhatsappIcon className="size-5" />
               Escribinos por WhatsApp

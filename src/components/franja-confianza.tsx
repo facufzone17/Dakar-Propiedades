@@ -1,5 +1,7 @@
 import { PROPIEDADES } from "@/data/propiedades";
 import { SITIO } from "@/config/site";
+import { CountUp } from "./anim/count-up";
+import { Reveal } from "./anim/reveal";
 
 /**
  * Franja de confianza: datos concretos, no logos de "empresas que confían" — eso
@@ -16,25 +18,25 @@ export function FranjaConfianza() {
   ).size;
 
   const datos = [
-    { valor: `${total}`, label: "propiedades en cartera" },
-    { valor: `${barriosCaba}`, label: "barrios de CABA, más GBA oeste" },
-    { valor: "4", label: "servicios: venta, alquiler, tasación y administración" },
+    { valor: total, label: "propiedades en cartera" },
+    { valor: barriosCaba, label: "barrios de CABA, más GBA oeste" },
+    { valor: 4, label: "servicios: venta, alquiler, tasación y administración" },
   ];
 
   return (
     <section aria-label="La inmobiliaria en números" className="bg-bg-subtle">
       <div className="mx-auto max-w-[1400px] px-5 py-14 lg:px-10 lg:py-20">
         <dl className="grid gap-10 sm:grid-cols-3 sm:gap-8">
-          {datos.map((d) => (
-            <div key={d.label}>
+          {datos.map((d, i) => (
+            <Reveal as="div" key={d.label} delay={i * 90}>
               <dt className="sr-only">{d.label}</dt>
               <dd>
                 <span className="block text-5xl font-semibold tracking-[-0.02em] lg:text-6xl">
-                  {d.valor}
+                  <CountUp value={d.valor} />
                 </span>
                 <span className="mt-2 block max-w-[24ch] text-lg text-muted">{d.label}</span>
               </dd>
-            </div>
+            </Reveal>
           ))}
         </dl>
         <p className="mt-10 text-lg text-muted">

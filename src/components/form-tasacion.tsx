@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { SITIO, whatsappUrl } from "@/config/site";
+import { SITIO, mailtoUrl, whatsappUrl } from "@/config/site";
 import { registrarConsulta } from "@/lib/track";
-import { ArrowRightIcon, ChevronDownIcon, WhatsappIcon } from "./icons";
+import { ArrowRightIcon, ChevronDownIcon, MailIcon, WhatsappIcon } from "./icons";
 
 /**
  * El formulario arma un mensaje de WhatsApp con los datos cargados y abre el chat.
@@ -27,12 +27,13 @@ export function FormTasacion() {
     comentario: "",
   });
 
+  const [via, setVia] = useState<"whatsapp" | "mail">("whatsapp");
+
   const set = (k: keyof typeof datos) => (v: string) =>
     setDatos((d) => ({ ...d, [k]: v }));
 
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const lineas = [
+  const armarMensaje = () =>
+    [
       `Hola ${SITIO.nombre}, quiero pedir una tasación.`,
       "",
       `Nombre: ${datos.nombre}`,
@@ -41,9 +42,20 @@ export function FormTasacion() {
       `Ubicación: ${datos.direccion}`,
       `Quiero: ${datos.operacion}`,
       datos.comentario ? `Comentario: ${datos.comentario}` : null,
-    ].filter(Boolean);
-    registrarConsulta("tasacion");
-    window.open(whatsappUrl(lineas.join("\n")), "_blank", "noopener,noreferrer");
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const mensaje = armarMensaje();
+    if (via === "mail") {
+      registrarConsulta("email");
+      window.location.href = mailtoUrl(`Pedido de tasación — ${SITIO.nombre}`, mensaje);
+    } else {
+      registrarConsulta("tasacion");
+      window.open(whatsappUrl(mensaje), "_blank", "noopener,noreferrer");
+    }
     setEnviado(true);
   };
 
@@ -74,19 +86,30 @@ export function FormTasacion() {
         </div>
       </div>
 
-      <button
-        type="submit"
-        className="mt-8 flex min-h-[56px] w-full items-center justify-center gap-2.5 rounded-brand bg-ink px-8 text-lg font-semibold text-white transition-opacity hover:opacity-90 sm:w-auto"
-      >
-        <WhatsappIcon className="size-5" />
-        Enviar por WhatsApp
-        <ArrowRightIcon className="size-[18px]" />
-      </button>
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <button
+          type="submit"
+          onClick={() => setVia("whatsapp")}
+          className="lift group flex min-h-[56px] flex-1 items-center justify-center gap-2.5 rounded-brand bg-ink px-8 text-lg font-semibold text-white hover:opacity-95"
+        >
+          <WhatsappIcon className="size-5" />
+          Enviar por WhatsApp
+          <ArrowRightIcon className="nudge size-[18px]" />
+        </button>
+        <button
+          type="submit"
+          onClick={() => setVia("mail")}
+          className="lift flex min-h-[56px] flex-1 items-center justify-center gap-2.5 rounded-brand border border-line bg-bg px-8 text-lg font-semibold hover:bg-bg-subtle"
+        >
+          <MailIcon className="size-5" />
+          Enviar por mail
+        </button>
+      </div>
 
       <p aria-live="polite" className="mt-4 text-[15px] text-muted">
         {enviado
-          ? "Se abrió WhatsApp con tu consulta cargada. Si no se abrió, revisá que el navegador no haya bloqueado la ventana."
-          : "Al enviar se abre WhatsApp con todos los datos ya escritos. Revisalos y mandá el mensaje."}
+          ? "Se abrió tu app de mensajería con la consulta cargada. Si no se abrió, revisá que el navegador no haya bloqueado la ventana."
+          : "Al enviar se abre WhatsApp o tu correo con todos los datos ya escritos. Revisalos y mandá el mensaje."}
       </p>
     </form>
   );

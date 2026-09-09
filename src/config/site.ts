@@ -15,10 +15,12 @@ export const SITIO = {
   direccion: process.env.NEXT_PUBLIC_SITIO_DIRECCION || "Av. Rivadavia 15000",
   /** Localidad / partido. Env: NEXT_PUBLIC_SITIO_LOCALIDAD */
   localidad: process.env.NEXT_PUBLIC_SITIO_LOCALIDAD || "Ramos Mejía, Buenos Aires",
-  /** Teléfono fijo, como se muestra. Env: NEXT_PUBLIC_SITIO_TELEFONO */
-  telefono: process.env.NEXT_PUBLIC_SITIO_TELEFONO || "011 4000-0000",
+  /** Teléfono, como se muestra. Env: NEXT_PUBLIC_SITIO_TELEFONO */
+  telefono: process.env.NEXT_PUBLIC_SITIO_TELEFONO || "11 2272-8576",
   /** Mismo teléfono en formato tel:. Env: NEXT_PUBLIC_SITIO_TELEFONO_HREF */
-  telefonoHref: process.env.NEXT_PUBLIC_SITIO_TELEFONO_HREF || "tel:+541140000000",
+  telefonoHref: process.env.NEXT_PUBLIC_SITIO_TELEFONO_HREF || "tel:+541122728576",
+  /** Mail de contacto. Env: NEXT_PUBLIC_SITIO_EMAIL */
+  email: process.env.NEXT_PUBLIC_SITIO_EMAIL || "trevoo.proyectos@gmail.com",
   /** Horario de atención. Env: NEXT_PUBLIC_SITIO_HORARIO */
   horario: process.env.NEXT_PUBLIC_SITIO_HORARIO || "9 a 13 h y 15 a 19 h",
   /** Frase corta de posicionamiento para el hero y subtítulos. */
@@ -45,11 +47,19 @@ export const MARCA = {
  * Env: NEXT_PUBLIC_WHATSAPP_NUMERO
  */
 export const WHATSAPP_NUMERO =
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMERO || "5491100000000";
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMERO || "5491122728576";
 
 /** Arma el link de WhatsApp con un mensaje precargado. */
 export function whatsappUrl(mensaje: string): string {
   return `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensaje)}`;
+}
+
+/** Arma un mailto: con asunto y cuerpo precargados. */
+export function mailtoUrl(asunto: string, cuerpo?: string): string {
+  const qs = `subject=${encodeURIComponent(asunto)}${
+    cuerpo ? `&body=${encodeURIComponent(cuerpo)}` : ""
+  }`;
+  return `mailto:${SITIO.email}?${qs}`;
 }
 
 export const NAV_LINKS = [
