@@ -16,9 +16,9 @@ export const SITIO = {
   /** Localidad / partido. Env: NEXT_PUBLIC_SITIO_LOCALIDAD */
   localidad: process.env.NEXT_PUBLIC_SITIO_LOCALIDAD || "Ramos Mejía, Buenos Aires",
   /** Teléfono, como se muestra. Env: NEXT_PUBLIC_SITIO_TELEFONO */
-  telefono: process.env.NEXT_PUBLIC_SITIO_TELEFONO || "11 2272-8576",
+  telefono: process.env.NEXT_PUBLIC_SITIO_TELEFONO || "11 3025-6777",
   /** Mismo teléfono en formato tel:. Env: NEXT_PUBLIC_SITIO_TELEFONO_HREF */
-  telefonoHref: process.env.NEXT_PUBLIC_SITIO_TELEFONO_HREF || "tel:+541122728576",
+  telefonoHref: process.env.NEXT_PUBLIC_SITIO_TELEFONO_HREF || "tel:+541130256777",
   /** Mail de contacto. Env: NEXT_PUBLIC_SITIO_EMAIL */
   email: process.env.NEXT_PUBLIC_SITIO_EMAIL || "trevoo.proyectos@gmail.com",
   /** Horario de atención. Env: NEXT_PUBLIC_SITIO_HORARIO */
@@ -47,7 +47,7 @@ export const MARCA = {
  * Env: NEXT_PUBLIC_WHATSAPP_NUMERO
  */
 export const WHATSAPP_NUMERO =
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMERO || "5491122728576";
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMERO || "5491130256777";
 
 /** Arma el link de WhatsApp con un mensaje precargado. */
 export function whatsappUrl(mensaje: string): string {
