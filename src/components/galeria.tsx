@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { lockScroll } from "@/lib/scroll-lock";
 import { ArrowRightIcon, CloseIcon } from "./icons";
 
 export function Galeria({ fotos, alt }: { fotos: string[]; alt: string }) {
@@ -17,10 +18,10 @@ export function Galeria({ fotos, alt }: { fotos: string[]; alt: string }) {
       if (e.key === "ArrowRight") setActiva((i) => (i + 1) % fotos.length);
       if (e.key === "ArrowLeft") setActiva((i) => (i - 1 + fotos.length) % fotos.length);
     };
-    document.body.style.overflow = "hidden";
+    const desbloquear = lockScroll();
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "";
+      desbloquear();
       window.removeEventListener("keydown", onKey);
     };
   }, [ampliada, fotos.length]);

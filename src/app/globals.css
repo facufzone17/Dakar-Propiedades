@@ -70,6 +70,23 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Scroll con inercia (Lenis, solo sitio público — ver hooks/use-lenis.ts).
+   Reglas mínimas en vez de importar lenis.css: ese archivo apaga los eventos
+   de puntero de TODOS los iframes, y dejaría sin interacción el mapa de
+   /contacto.
+   --------------------------------------------------------------------------- */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* ---------------------------------------------------------------------------
    Movimiento — sutil, elegante, del rubro.
    Todo respeta `prefers-reduced-motion` (ver bloque de arriba + guardas propias).
    --------------------------------------------------------------------------- */

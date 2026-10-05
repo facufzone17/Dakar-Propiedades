@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { MARCA, NAV_LINKS, SITIO, whatsappUrl } from "@/config/site";
+import { lockScroll } from "@/lib/scroll-lock";
 import { ArrowRightIcon, CloseIcon, MenuIcon, WhatsappIcon } from "./icons";
 
 const MENSAJE_WA = `Hola ${SITIO.nombre}, quería hacerles una consulta.`;
@@ -17,10 +18,10 @@ export function SiteHeader() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setMenuAbierto(false);
     };
-    document.body.style.overflow = "hidden";
+    const desbloquear = lockScroll();
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "";
+      desbloquear();
       window.removeEventListener("keydown", onKey);
     };
   }, [menuAbierto]);
