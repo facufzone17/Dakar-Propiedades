@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Recorrido web y panel</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Urbanist";
+        src: url("assets/fonts/urbanist.woff2") format("woff2");
+        font-weight: 100 900;
+        font-style: normal;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #f2eee7; }
+      #root {
+        position: relative; width: 100%; height: 100%; overflow: hidden;
+        font-family: "Urbanist", sans-serif; color: #1a1714; background: #f2eee7;
+      }
+      .clip { position: absolute; }
+      .o0 { opacity: 0; }
+
+      /* Fondo */
+      .bg { inset: 0; background: #f2eee7; overflow: hidden; }
+      .bg .dots {
+        position: absolute; inset: 0;
+        background-image: radial-gradient(rgba(26, 23, 20, 0.13) 1.6px, transparent 1.7px);
+        background-size: 30px 30px;
+      }
+      .bg .glow {
+        position: absolute; width: 1300px; height: 1300px; left: 1050px; top: -380px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(233, 169, 58, 0.28) 0%, rgba(233, 169, 58, 0) 65%);
+      }
+      .bg .glow2 {
+        position: absolute; width: 1100px; height: 1100px; left: -420px; top: 420px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(233, 169, 58, 0.16) 0%, rgba(233, 169, 58, 0) 65%);
+      }
+
+      /* Encabezado de parte */
+      .head { left: 72px; top: 62px; height: 50px; width: 1200px; }
+      .head-in { display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 700; letter-spacing: 0.01em; color: #1a1714; }
+      .head-in .dot { display: block; width: 16px; height: 16px; border-radius: 50%; background: #e9a93a; box-shadow: 0 0 0 6px rgba(233, 169, 58, 0.25); }
+
+      /* Navegador */
+      .frame { left: 72px; top: 150px; width: 1200px; height: 800px; }
+      .frame-in {
+        position: absolute; inset: 0; border-radius: 20px; overflow: hidden; background: #fff;
+        box-shadow: 0 40px 90px rgba(40, 30, 15, 0.22), 0 0 0 2px rgba(26, 23, 20, 0.08);
+      }
+      .bar { position: absolute; left: 0; top: 0; width: 100%; height: 50px; background: #e7e1d6; display: flex; align-items: center; gap: 10px; padding-left: 22px; }
+      .bar i { display: block; width: 14px; height: 14px; border-radius: 50%; background: #c9bfae; }
+      .vpbg { position: absolute; left: 0; top: 50px; width: 100%; height: 750px; background: #f5f5f4; }
+      .urlclip { left: 222px; top: 159px; width: 900px; height: 32px; }
+      .urlclip span {
+        display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;
+        background: #fbf9f6; border-radius: 16px; font-size: 19px; font-weight: 600; color: #4f473e;
+      }
+      .vp { left: 72px; top: 200px; width: 1200px; height: 750px; overflow: hidden; border-radius: 0 0 20px 20px; }
+      .fade { position: absolute; inset: 0; }
+      .stage { position: absolute; left: 0; top: 0; width: 1200px; }
+      .shot { position: absolute; left: 0; top: 0; display: block; }
+      .ring {
+        position: absolute; border: 5px solid #e9a93a; border-radius: 16px; opacity: 0;
+        box-shadow: 0 0 0 4000px rgba(23, 20, 15, 0.4), 0 0 34px rgba(233, 169, 58, 0.7);
+      }
+      .cursor { position: absolute; left: 0; top: 0; width: 44px; height: 44px; opacity: 0; }
+      .cursor svg { display: block; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35)); transform-origin: 7px 4px; }
+      .ripple { position: absolute; left: -28px; top: -30px; width: 70px; height: 70px; border-radius: 50%; border: 5px solid #e9a93a; opacity: 0; }
+
+      /* Panel de texto */
+      .txt { left: 1336px; top: 150px; width: 520px; height: 800px; }
+      .txt-in { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; }
+      .kicker { font-size: 24px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #6b5f50; }
+      .t { margin-top: 14px; font-size: 60px; font-weight: 700; line-height: 1.06; letter-spacing: -0.015em; color: #1a1714; }
+      .rule { width: 96px; height: 7px; border-radius: 4px; background: #e9a93a; margin: 28px 0 26px; transform-origin: left center; }
+      .body { font-size: 34px; font-weight: 500; line-height: 1.4; color: #3b342c; }
+      .bul { list-style: none; margin-top: 32px; }
+      .bul li { display: flex; align-items: flex-start; gap: 16px; font-size: 30px; font-weight: 650; line-height: 1.28; color: #1a1714; margin-bottom: 20px; }
+      .chk { flex: none; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: #e9a93a; margin-top: -1px; }
+      .chk.dk { width: 48px; height: 48px; }
+
+      /* Celulares */
+      .phones { inset: 0; }
+      .phone { position: absolute; width: 384px; height: 804px; border-radius: 58px; background: #17140f; padding: 12px; box-shadow: 0 40px 80px rgba(40, 30, 15, 0.3); }
+      #ph-a { left: 250px; top: 150px; }
+      #ph-b { left: 700px; top: 165px; }
+      .screen { position: relative; width: 360px; height: 780px; border-radius: 46px; overflow: hidden; background: #fff; }
+      .screen img { position: absolute; left: 0; top: 0; display: block; }
+      .notch { position: absolute; left: 137px; top: 24px; width: 110px; height: 30px; border-radius: 15px; background: #17140f; }
+
+      /* Escenas oscuras */
+      .dark { inset: 0; }
+      .dark-in { position: absolute; inset: 0; background: #17140f; overflow: hidden; }
+      .collage { position: absolute; left: 820px; top: 0; width: 1900px; height: 1080px; }
+      .collage img { position: absolute; width: 860px; height: 537px; border-radius: 18px; box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5); }
+      #ic1 { left: 0; top: 70px; }
+      #ic2 { left: 420px; top: 330px; }
+      #ic3 { left: 840px; top: 590px; }
+      .veil { position: absolute; inset: 0; background: linear-gradient(90deg, #17140f 0%, #17140f 42%, rgba(23, 20, 15, 0.6) 75%, rgba(23, 20, 15, 0.35) 100%); }
+      .intro-txt, .ch-txt, .close-txt { position: absolute; left: 130px; top: 0; height: 100%; width: 1150px; display: flex; flex-direction: column; justify-content: center; }
+      .dk-kicker { font-size: 28px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #e9a93a; }
+      .dk-title { margin-top: 24px; font-size: 118px; font-weight: 700; line-height: 1.0; letter-spacing: -0.025em; color: #f5f0e8; }
+      .dk-title.ch { font-size: 104px; }
+      .dk-sub { margin-top: 30px; font-size: 40px; font-weight: 500; line-height: 1.35; color: #d6ccbc; max-width: 960px; }
+      .dk-note { margin-top: 46px; font-size: 27px; font-weight: 500; color: #ada392; }
+      .dk-rule { width: 130px; height: 8px; border-radius: 4px; background: #e9a93a; margin-top: 36px; transform-origin: left center; }
+      .ghost { position: absolute; right: 40px; top: -200px; font-size: 1100px; font-weight: 800; line-height: 1; color: rgba(233, 169, 58, 0.13); }
+      .dk-bul { list-style: none; margin-top: 46px; }
+      .dk-bul li { display: flex; align-items: center; gap: 22px; font-size: 42px; font-weight: 600; color: #f5f0e8; margin-bottom: 22px; }
+      .dk-contact { margin-top: 40px; font-size: 38px; font-weight: 700; color: #e9a93a; }
+
+      /* Barra de progreso */
+      .prog { left: 72px; top: 1036px; width: 1776px; height: 8px; border-radius: 4px; background: rgba(150, 135, 115, 0.28); overflow: hidden; }
+      .prog-fill { width: 100%; height: 100%; background: #e9a93a; transform-origin: left center; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="120" data-width="1920" data-height="1080">
+      <div id="bg" class="clip bg" data-start="0" data-duration="120" data-track-index="0">
+        <div class="dots"></div>
+        <div class="glow" id="glow"></div>
+        <div class="glow2" id="glow2"></div>
+      </div>
+<!--ESCENAS-->
+      <div id="prog" class="clip prog" data-start="0" data-duration="120" data-track-index="10">
+        <div class="prog-fill" id="prog-fill"></div>
+      </div>
+<!--AUDIO-->
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#prog-fill", { scaleX: 0 }, { scaleX: 1, duration: 120, ease: "none" }, 0);
+      tl.fromTo("#glow", { scale: 1, x: 0 }, { scale: 1.18, x: -60, duration: 10, ease: "sine.inOut", yoyo: true, repeat: 11 }, 0);
+      tl.fromTo("#glow2", { scale: 1.1, y: 0 }, { scale: 0.95, y: -50, duration: 12, ease: "sine.inOut", yoyo: true, repeat: 9 }, 0);
+/*TIMELINE*/
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
